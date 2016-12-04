@@ -1,0 +1,3 @@
+olenaza_blog:
+    resource: "@OlenazaBlogBundle/Resources/config/routing.yml"
+    prefix:   /
