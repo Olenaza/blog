@@ -1,3 +1,6 @@
-olenaza_blog:
+olenaza_blog_homepage:
     resource: "@OlenazaBlogBundle/Resources/config/routing.yml"
-    prefix:   /
+
+olenaza_blog_posts:
+    resource: "@OlenazaBlogBundle/Resources/config/routing_posts.yml"
+    prefix:   /posts

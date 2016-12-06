@@ -1,3 +1,15 @@
-olenaza_blog_homepage:
+welcome:
     path:     /
-    defaults: { _controller: OlenazaBlogBundle:Default:index }
+    defaults: { _controller: OlenazaBlogBundle:Welcome:index }
+
+about_show:
+    path:     /about
+    defaults: { _controller: OlenazaBlogBundle:About:index }
+
+about_edit:
+    path:     /about/edit
+    defaults: { _controller: OlenazaBlogBundle:About:edit }
+
+about_delete:
+    path:     /about/delete
+    defaults: { _controller: OlenazaBlogBundle:About:delete }

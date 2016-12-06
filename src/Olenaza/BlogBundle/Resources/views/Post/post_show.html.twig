@@ -1,0 +1,24 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Подорожі{% endblock %}
+
+{% block content %}
+
+    {% include "OlenazaBlogBundle::_partials_edit_buttons.html.twig" %}
+
+    <h3>{{ post.title }}</h3>
+    <br><hr>
+    <div>{{ post.text }}</div>
+
+    {% if post.tags %}
+        <br>
+        <h4>Теги:</h4>
+        <ul>
+            {% for tag in post.tags %}
+
+                <li>{{ tag.name }}</li>
+
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

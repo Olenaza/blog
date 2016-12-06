@@ -1,0 +1,41 @@
+<nav class="navbar navbar-default">
+
+    <div class="navbar-header">
+
+        <!-- Collapsed Hamburger -->
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+            <span class="sr-only">Toggle Navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+
+        <!-- Branding Image -->
+        <a class="navbar-brand" href="{{ path('welcome') }}">
+            Блог
+        </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="app-navbar-collapse">
+        <!-- Left Side Of Navbar -->
+        <ul class="nav navbar-nav">
+            <li><a href="{{ path('welcome') }}">Головна</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav">
+            <li><a href="{{ path('posts_list') }}">Подорожі</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav">
+            <li><a href="#">Фотогалерея</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav">
+            <li><a href="#">Мапа</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav">
+            <li><a href="{{ path('about_show') }}">Про автора</a></li>
+        </ul>
+    </div>
+</nav>

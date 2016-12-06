@@ -1,0 +1,28 @@
+posts_list:
+    path:     /{page}
+    defaults: { _controller: OlenazaBlogBundle:Post:list, page: 1 }
+    methods: [GET]
+    requirements:
+      page: '\d+'
+
+posts_list_no_page:
+    path:     /
+    defaults:
+      _controller: FrameworkBundle:Redirect:urlRedirect
+      path: /posts
+      permanent: true
+    methods: [GET]
+
+post_show:
+    path:     /{slug}
+    defaults: { _controller: OlenazaBlogBundle:Post:show }
+    methods: [GET]
+
+post_edit:
+    path:     /{slug}/edit
+    defaults: { _controller: OlenazaBlogBundle:Post:edit }
+    methods: [GET]
+
+post_delete:
+    path:     /{slug}/delete
+    defaults: { _controller: OlenazaBlogBundle:Post:delete }

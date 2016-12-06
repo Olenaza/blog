@@ -1,0 +1,15 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Подорожі{% endblock %}
+
+{% block content %}
+
+    <h1>Подорожі</h1>
+
+    {% if tag is defined %}
+        <p>за тегом {{ tag.name }}</p>
+    {% endif %}
+    <hr>
+
+    {% include "OlenazaBlogBundle:Post:_partials_posts_list.html.twig" %}
+{% endblock %}
