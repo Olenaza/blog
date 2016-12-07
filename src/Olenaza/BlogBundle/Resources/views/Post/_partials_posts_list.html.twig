@@ -5,7 +5,7 @@
                 <div class="panel-heading">
                     <li><a href="{{ path('post_show', {'slug': post.slug}) }}">{{ post.title|upper }}</a></li>
                 </div>
-                <div class="panel-body">{{ post.beginning }}</div>
+                <div class="panel-body">{{ post.beginning | trim('.') | add_ellipsis }}</div>
             </div>
         </div>
     </div>

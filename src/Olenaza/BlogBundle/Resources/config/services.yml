@@ -1,4 +1,5 @@
 services:
-#    olenaza_blog.example:
-#        class: Olenaza\BlogBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    twig.extension.add_ellipsis:
+        class: Olenaza\BlogBundle\Extension\Twig\BlogTwigExtension
+        tags:
+               - { name: twig.extension }
