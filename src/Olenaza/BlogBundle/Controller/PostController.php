@@ -2,8 +2,13 @@
 
 namespace Olenaza\BlogBundle\Controller;
 
+use Olenaza\BlogBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class PostController extends Controller
 {
@@ -34,6 +39,49 @@ class PostController extends Controller
             'posts' => $post,
             'page' => $page,
         ]);
+    }
+
+    /**
+     * Create new post.
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function newAction(Request $request)
+    {
+        $post = new Post();
+
+        $tags = $this->getDoctrine()->getRepository('OlenazaBlogBundle:Tag')->findAll();
+
+        $form = $this->createFormBuilder($post)
+            ->add('title', TextType::class)
+            ->add('subtitle', TextType::class)
+            ->add('text', TextType::class)
+            ->add('coverImage', TextType::class)
+            ->add('publishOn', DateType::class)
+            ->add('save', SubmitType::class, array('label' => 'Create Post'))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post = $form->getData();
+
+            print_r($post);
+            // ... perform some action, such as saving the task to the database
+            // for example, if Task is a Doctrine entity, save it!
+            // $em = $this->getDoctrine()->getManager();
+            // $em->persist($task);
+            // $em->flush();
+
+            return $this->redirectToRoute('post_new');
+        }
+
+        return $this->render('OlenazaBlogBundle:Post:post_form.html.twig', array(
+            'form' => $form->createView(),
+            'tags' => $tags,
+        ));
     }
 
     /**

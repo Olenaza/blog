@@ -7,9 +7,12 @@ class BlogTwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('add_ellipsis', function($string) {
-                return $string . '...';
-            }),
+            new \Twig_SimpleFilter('add_ellipsis', array($this, 'addEllipsisFilter')),
         );
+    }
+
+    public function addEllipsisFilter($string)
+    {
+        return $string.'...';
     }
 }

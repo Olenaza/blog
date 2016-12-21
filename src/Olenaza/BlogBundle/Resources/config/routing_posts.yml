@@ -13,6 +13,10 @@ posts_list_no_page:
       permanent: true
     methods: [GET]
 
+post_new:
+    path:     /new
+    defaults: { _controller: OlenazaBlogBundle:Post:new }
+
 post_show:
     path:     /{slug}
     defaults: { _controller: OlenazaBlogBundle:Post:show }
