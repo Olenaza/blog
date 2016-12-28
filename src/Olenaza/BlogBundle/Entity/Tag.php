@@ -5,12 +5,13 @@ namespace Olenaza\BlogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as SymfonyConstraint;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Table(name="tag")
  * @ORM\Entity(repositoryClass="Olenaza\BlogBundle\Repository\TagRepository")
  *
- * @UniqueEntity("Name")
+ * @UniqueEntity("name")
  */
 class Tag
 {
@@ -22,7 +23,7 @@ class Tag
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(name= "`name`", type="string", length=255, unique=true)
      *
      * @SymfonyConstraint\NotBlank()
      * @SymfonyConstraint\Type("string")
@@ -42,7 +43,7 @@ class Tag
 
     public function __construct()
     {
-        $this->posts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     /**
@@ -80,7 +81,8 @@ class Tag
      */
     public function addPost(Post $post)
     {
-        $this->posts[] = $post;
+        //$this->posts[] = $post;
+        $this->posts->add($post);
 
         return $this;
     }

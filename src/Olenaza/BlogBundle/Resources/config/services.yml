@@ -3,3 +3,6 @@ services:
         class: Olenaza\BlogBundle\Extension\Twig\BlogTwigExtension
         tags:
                - { name: twig.extension }
+
+    blog.slugger:
+        class: Olenaza\BlogBundle\Utils\Slugger

@@ -20,12 +20,10 @@ post_new:
 post_show:
     path:     /{slug}
     defaults: { _controller: OlenazaBlogBundle:Post:show }
-    methods: [GET]
 
 post_edit:
     path:     /{slug}/edit
     defaults: { _controller: OlenazaBlogBundle:Post:edit }
-    methods: [GET]
 
 post_delete:
     path:     /{slug}/delete

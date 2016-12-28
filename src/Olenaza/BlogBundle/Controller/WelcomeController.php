@@ -29,7 +29,7 @@ class WelcomeController extends Controller
             'published' => true,
         ];
 
-        return $this->render('OlenazaBlogBundle:Welcome:welcome_page.html.twig', [
+        return $this->render('OlenazaBlogBundle:welcome:welcome_page.html.twig', [
             'posts' => $post,
         ]);
     }

@@ -20,7 +20,7 @@ class AboutController extends Controller
 
         $urlDelete = $this->generateUrl('about_delete');
 
-        return $this->render('OlenazaBlogBundle:About:index.html.twig', [
+        return $this->render('OlenazaBlogBundle:about:index.html.twig', [
             'access' => true,
             'info' => $info,
             'urlEdit' => $urlEdit,
@@ -54,7 +54,7 @@ class AboutController extends Controller
 
         $urlDelete = $this->generateUrl('about_delete');
 
-        return $this->render('OlenazaBlogBundle:About:index.html.twig', [
+        return $this->render('OlenazaBlogBundle:about:index.html.twig', [
             'access' => true,
             'urlEdit' => $urlEdit,
             'urlDelete' => $urlDelete,

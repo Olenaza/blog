@@ -1,0 +1,66 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Подорожі{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('vendor/select2/dist/css/select2.min.css') }}" media="all" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block content %}
+
+    <h1>{{ form_title }}</h1>
+
+    {{ form_start(form) }}
+        <div>
+            {{ form_errors(form) }}
+        </div>
+        <div>
+            {{ form_label(form.title) }}
+            {{ form_errors(form.title) }}
+            {{ form_widget(form.title, {'help': '* This field is required'}) }}
+        </div>
+        <div>
+            {{ form_row(form.subtitle) }}
+        </div>
+        <div>
+            {{ form_label(form.text) }}
+            {{ form_errors(form.text) }}
+            {{ form_widget(form.text, {'help': '** This field is required when you choose to publish the post'}) }}
+        </div>
+        <div>
+            {{ form_label(form.coverImage) }}
+            {{ form_errors(form.coverImage) }}
+            {{ form_widget(form.coverImage, {'help': '** This field is required when you choose to publish the post'}) }}
+        </div>
+        <div>
+            {{ form_row(form.tags) }}
+        </div>
+        <div>
+            {{ form_row(form.published) }}
+        </div>
+        {% if not form.published %}
+            <div>
+                {{ form_row(form.publishOn) }}
+            </div>
+        {% endif %}
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/select2/dist/js/select2.full.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".select2").select2({
+                tags: "true",
+                placeholder: "Select tags",
+                allowClear: true,
+                tokenSeparators: [',', ' '],
+                multiple: true,
+            });
+        });
+    </script>
+{% endblock %}

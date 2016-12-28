@@ -4,6 +4,12 @@
 
 {% block content %}
 
+    {% for flashMessage in app.session.flashBag.get('notice') %}
+        <div class="flash-notice">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
     <h1>Подорожі</h1>
 
     {% if tag is defined %}
@@ -11,5 +17,5 @@
     {% endif %}
     <hr>
 
-    {% include "OlenazaBlogBundle:Post:_partials_posts_list.html.twig" %}
+    {% include "OlenazaBlogBundle:post:_partials_posts_list.html.twig" %}
 {% endblock %}

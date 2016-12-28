@@ -13,3 +13,7 @@ about_edit:
 about_delete:
     path:     /about/delete
     defaults: { _controller: OlenazaBlogBundle:About:delete }
+
+tag_new:
+    path:     /tags/new
+    defaults: { _controller: OlenazaBlogBundle:Tag:new }

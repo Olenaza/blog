@@ -22,7 +22,9 @@
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
-        "bower-asset/bootstrap": "^3.3"
+        "bower-asset/bootstrap": "^3.3",
+        "bower-asset/jquery": "^3.1",
+        "bower-asset/select2": "^4.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

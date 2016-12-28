@@ -5,6 +5,8 @@ namespace Olenaza\BlogBundle\Entity;
 use Symfony\Component\Validator\Constraints as SymfonyConstraint;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * @ORM\Table(name="post")
@@ -13,11 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @UniqueEntity(
  *     "coverImage",
  *     message="This image is already used as a cover image in the other post"
- * )
- * @UniqueEntity(
- *     fields={"title", "subtitle"},
- *     errorPath="subtitle",
- *     message="This combination of title and subtitle already exists in the other post"
  * )
  * @UniqueEntity(
  *     fields={"title", "subtitle"},
@@ -62,9 +59,9 @@ class Post
     private $subtitle;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      *
-     * @SymfonyConstraint\NotBlank()
+     * @SymfonyConstraint\NotBlank(groups={"Published"})
      * @SymfonyConstraint\Type("string")
      * @SymfonyConstraint\Length(
      *      min=2,
@@ -74,9 +71,9 @@ class Post
     private $text;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      *
-     * @SymfonyConstraint\NotBlank()
+     * @SymfonyConstraint\NotBlank(groups={"Published"})
      * @SymfonyConstraint\Url(
      *     checkDNS = true
      * )
@@ -93,11 +90,6 @@ class Post
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     */
-    private $publishedOn;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
      * @SymfonyConstraint\Date()
      * @SymfonyConstraint\Range(
      *      min="today",
@@ -106,7 +98,7 @@ class Post
      *      maxMessage="The post publication date can't be later than 365 days from today"
      * )
      */
-    private $publishOn;
+    private $publishedOn;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -119,21 +111,40 @@ class Post
     private $beginning;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="posts")
+     * @ORM\ManyToMany(
+     *     targetEntity="Tag",
+     *     inversedBy="posts",
+     *     cascade={"persist"}
+     * )
      * @ORM\JoinTable(name="posts_tags")
      *
      * @SymfonyConstraint\Valid
      *
      * @SymfonyConstraint\Count(
-     *      min="1",
-     *      minMessage="You must specify at least one tag"
+     *     min="1",
+     *     minMessage="You must specify at least one tag",
+     *     groups={"Published"}
      * )
      */
     private $tags;
 
+    /**
+     * @ORM\OneToMany(
+     *      targetEntity="Comment",
+     *      mappedBy="post",
+     *      orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"publishedAt" = "DESC"})
+     *
+     * @SymfonyConstraint\Valid
+     */
+    private $comments;
+
     public function __construct()
     {
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->publishedOn = new \DateTime('today');
+        $this->tags = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -271,7 +282,7 @@ class Post
      */
     public function setSlug($slug)
     {
-        $this->slug = $this->title;
+        $this->slug = $slug;
 
         return $this;
     }
@@ -287,9 +298,9 @@ class Post
     /**
      * @return Post
      */
-    public function setBeginning()
+    public function setBeginning($beginning)
     {
-        $this->beginning = 'Beginnning';
+        $this->beginning = $beginning;
 
         return $this;
     }
@@ -303,29 +314,26 @@ class Post
     }
 
     /**
-     * @param \DateTime $publishOn
-     *
-     * @return Post
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function setPublishOn($publishOn)
+    public function getTags()
     {
-        $this->publishOn = $publishOn;
-
-        return $this;
+        return $this->tags;
     }
 
     /**
-     * @return \DateTime
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPublishOn()
+    public function getComments()
     {
-        return $this->publishOn;
+        return $this->comments;
     }
 
     public function addTag(Tag $tag)
     {
         $tag->addPost($this);
-        $this->tags[] = $tag;
+        //$this->tags[] = $tag;
+        $this->tags->add($tag);
     }
 
     /**
@@ -337,11 +345,23 @@ class Post
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection
+     * @param Comment $comment
+     *
+     * @return Post
      */
-    public function getTags()
+    public function addComment(Comment $comment)
     {
-        return $this->tags;
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @param Comment $comment
+     */
+    public function removeComment(Comment $comment)
+    {
+        $this->comments->removeElement($comment);
     }
 
     /**
@@ -353,12 +373,20 @@ class Post
     }
 
     /**
-     * Get published.
+     * Determine validation groups depending on whether the post is set to be published.
      *
-     * @return bool
+     * @param FormInterface $form
+     *
+     * @return array
      */
-    public function getPublished()
+    public static function determineValidationGroups(FormInterface $form)
     {
-        return $this->published;
+        $data = $form->getData();
+
+        if (true === $data->isPublished()) {
+            return ['Default', 'Published'];
+        }
+
+        return ['Default'];
     }
 }
