@@ -139,8 +139,17 @@ class PostAdmin extends AbstractAdmin
             : 'Post'; // shown in the breadcrumb on the create view
     }
 
+    public function prePersist($object)
+    {
+        if (!$object->isPublished()) {
+            $object->setPublishedOn(null);
+        }
+    }
+
     public function preUpdate($object)
     {
-        $object->setPublishedOn(null);
+        if (!$object->isPublished()) {
+            $object->setPublishedOn(null);
+        }
     }
 }
