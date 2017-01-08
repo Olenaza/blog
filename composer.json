@@ -24,7 +24,12 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "bower-asset/bootstrap": "^3.3",
         "bower-asset/jquery": "^3.1",
-        "bower-asset/select2": "^4.0"
+        "bower-asset/select2": "^4.0",
+        "sonata-project/admin-bundle": "^3.10",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.1",
+        "sonata-project/core-bundle": "^3.1",
+        "sonata-project/block-bundle": "^3.2",
+        "knplabs/knp-menu-bundle": "^2.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

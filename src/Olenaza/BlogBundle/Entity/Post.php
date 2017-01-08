@@ -71,6 +71,20 @@ class Post
     private $text;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @SymfonyConstraint\NotBlank(groups={"Published"})
+     * @SymfonyConstraint\Type("string")
+     * @SymfonyConstraint\Length(
+     *      min=2,
+     *      max=255,
+     *      minMessage="The post beginning must be at least 2 characters long",
+     *      maxMessage="The post beginning cannot be longer than 255 characters"
+     * )
+     */
+    private $beginning;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      *
      * @SymfonyConstraint\NotBlank(groups={"Published"})
@@ -101,14 +115,9 @@ class Post
     private $publishedOn;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $slug;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $beginning;
 
     /**
      * @ORM\ManyToMany(
@@ -117,8 +126,6 @@ class Post
      *     cascade={"persist"}
      * )
      * @ORM\JoinTable(name="posts_tags")
-     *
-     * @SymfonyConstraint\Valid
      *
      * @SymfonyConstraint\Count(
      *     min="1",
@@ -135,8 +142,6 @@ class Post
      *      orphanRemoval=true
      * )
      * @ORM\OrderBy({"publishedAt" = "DESC"})
-     *
-     * @SymfonyConstraint\Valid
      */
     private $comments;
 
@@ -213,6 +218,26 @@ class Post
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * @param string $beginning
+     *
+     * @return Post
+     */
+    public function setBeginning($beginning)
+    {
+        $this->beginning = $beginning;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBeginning()
+    {
+        return $this->beginning;
     }
 
     /**
@@ -293,24 +318,6 @@ class Post
     public function getSlug()
     {
         return $this->slug;
-    }
-
-    /**
-     * @return Post
-     */
-    public function setBeginning($beginning)
-    {
-        $this->beginning = $beginning;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBeginning()
-    {
-        return $this->beginning;
     }
 
     /**

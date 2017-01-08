@@ -6,3 +6,33 @@ services:
 
     blog.slugger:
         class: Olenaza\BlogBundle\Utils\Slugger
+
+    admin.post:
+        class: Olenaza\BlogBundle\Admin\PostAdmin
+        arguments: [~, Olenaza\BlogBundle\Entity\Post, ~]
+        tags:
+            - name: sonata.admin
+              manager_type: orm
+              group: "Content"
+              label: "Post"
+              show_mosaic_button: false
+
+    admin.tag:
+        class: Olenaza\BlogBundle\Admin\TagAdmin
+        arguments: [~, Olenaza\BlogBundle\Entity\Tag, ~]
+        tags:
+            - name: sonata.admin
+              manager_type: orm
+              group: "Content"
+              label: "Tag"
+              show_mosaic_button: false
+
+    admin.about:
+        class: Olenaza\BlogBundle\Admin\AboutPageAdmin
+        arguments: [~, Olenaza\BlogBundle\Entity\AboutPage, ~]
+        tags:
+            - name: sonata.admin
+              manager_type: orm
+              group: "Pages"
+              label: "About Page"
+              show_mosaic_button: false

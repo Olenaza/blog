@@ -4,3 +4,12 @@ olenaza_blog_homepage:
 olenaza_blog_posts:
     resource: "@OlenazaBlogBundle/Resources/config/routing_posts.yml"
     prefix:   /posts
+
+admin_area:
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
