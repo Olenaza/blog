@@ -36,3 +36,10 @@ services:
               group: "Pages"
               label: "About Page"
               show_mosaic_button: false
+
+    blog.menu_builder:
+            class: Olenaza\BlogBundle\Menu\MenuBuilder
+            arguments: ["@knp_menu.factory"]
+            tags:
+                - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+                - { name: knp_menu.menu_builder, method: createBottomMenu, alias: bottom }

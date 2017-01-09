@@ -2,18 +2,6 @@ welcome:
     path:     /
     defaults: { _controller: OlenazaBlogBundle:Welcome:index }
 
-about_show:
+about:
     path:     /about
     defaults: { _controller: OlenazaBlogBundle:About:index }
-
-about_edit:
-    path:     /about/edit
-    defaults: { _controller: OlenazaBlogBundle:About:edit }
-
-about_delete:
-    path:     /about/delete
-    defaults: { _controller: OlenazaBlogBundle:About:delete }
-
-tag_new:
-    path:     /tags/new
-    defaults: { _controller: OlenazaBlogBundle:Tag:new }

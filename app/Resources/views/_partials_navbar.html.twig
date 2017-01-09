@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" role="navigation">
 
     <div class="navbar-header">
 
@@ -17,25 +17,14 @@
     </div>
 
     <div class="collapse navbar-collapse" id="app-navbar-collapse">
-        <!-- Left Side Of Navbar -->
-        <ul class="nav navbar-nav">
-            <li><a href="{{ path('welcome') }}">Головна</a></li>
-        </ul>
-
-        <ul class="nav navbar-nav">
-            <li><a href="{{ path('posts_list') }}">Подорожі</a></li>
-        </ul>
-
-        <ul class="nav navbar-nav">
-            <li><a href="#">Фотогалерея</a></li>
-        </ul>
-
-        <ul class="nav navbar-nav">
-            <li><a href="#">Мапа</a></li>
-        </ul>
-
-        <ul class="nav navbar-nav">
-            <li><a href="{{ path('about_show') }}">Про автора</a></li>
-        </ul>
+        {{ knp_menu_render('main') }}
     </div>
+</nav>
+
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+
+    <div class="collapse navbar-collapse" id="app-navbar-collapse">
+        {{ knp_menu_render('bottom') }}
+    </div>
+
 </nav>
