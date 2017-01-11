@@ -4,9 +4,6 @@ services:
         tags:
                - { name: twig.extension }
 
-    blog.slugger:
-        class: Olenaza\BlogBundle\Utils\Slugger
-
     admin.post:
         class: Olenaza\BlogBundle\Admin\PostAdmin
         arguments: [~, Olenaza\BlogBundle\Entity\Post, ~]
@@ -27,6 +24,16 @@ services:
               label: "Tag"
               show_mosaic_button: false
 
+    admin.category:
+            class: Olenaza\BlogBundle\Admin\CategoryAdmin
+            arguments: [~, Olenaza\BlogBundle\Entity\Category, ~]
+            tags:
+                - name: sonata.admin
+                  manager_type: orm
+                  group: "Content"
+                  label: "Category"
+                  show_mosaic_button: false
+
     admin.about:
         class: Olenaza\BlogBundle\Admin\AboutPageAdmin
         arguments: [~, Olenaza\BlogBundle\Entity\AboutPage, ~]
@@ -39,7 +46,7 @@ services:
 
     blog.menu_builder:
             class: Olenaza\BlogBundle\Menu\MenuBuilder
-            arguments: ["@knp_menu.factory"]
+            arguments: ["@knp_menu.factory", "@service_container"]
             tags:
                 - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
                 - { name: knp_menu.menu_builder, method: createBottomMenu, alias: bottom }

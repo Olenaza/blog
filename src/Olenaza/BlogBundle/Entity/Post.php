@@ -136,6 +136,21 @@ class Post
     private $tags;
 
     /**
+     * @ORM\ManyToMany(
+     *     targetEntity="Category",
+     *     inversedBy="posts",
+     *     cascade={"persist"}
+     * )
+     *
+     * @SymfonyConstraint\Count(
+     *     min="1",
+     *     minMessage="You must specify at least one category",
+     *     groups={"Published"}
+     * )
+     */
+    private $categories;
+
+    /**
      * @ORM\OneToMany(
      *      targetEntity="Comment",
      *      mappedBy="post",
@@ -331,6 +346,14 @@ class Post
     /**
      * @return \Doctrine\Common\Collections\Collection
      */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
     public function getComments()
     {
         return $this->comments;
@@ -341,6 +364,21 @@ class Post
         $tag->addPost($this);
         //$this->tags[] = $tag;
         $this->tags->add($tag);
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function removeCategory(Category $category)
+    {
+        $this->categories->removeElement($category);
+    }
+
+    public function addCategory(Category $category)
+    {
+        $category->addPost($this);
+
+        $this->categories->add($category);
     }
 
     /**

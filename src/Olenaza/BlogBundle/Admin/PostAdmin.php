@@ -20,6 +20,11 @@ class PostAdmin extends AbstractAdmin
         '_sort_by' => 'publishedOn',
     ];
 
+    /**
+     * Configure form fields for post entity on admin page.
+     *
+     * @param FormMapper $formMapper
+     */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -44,6 +49,12 @@ class PostAdmin extends AbstractAdmin
             ->end()
 
             ->with('Meta data', ['class' => 'col-md-6'])
+                ->add('categories', 'sonata_type_model', [
+                    'class' => 'Olenaza\BlogBundle\Entity\Category',
+                    'multiple' => true,
+                    'property' => 'title',
+                    'help' => '* This field is required',
+                ])
                 ->add('tags', 'sonata_type_model', [
                     'class' => 'Olenaza\BlogBundle\Entity\Tag',
                     'multiple' => true,
@@ -76,15 +87,26 @@ class PostAdmin extends AbstractAdmin
         }
     }
 
+    /**
+     * Configure ffilters for post entity on admin page.
+     *
+     * @param DatagridMapper $datagridMapper
+     */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('title')
+            ->add('categories')
             ->add('tags')
             ->add('published')
         ;
     }
 
+    /**
+     * Configure list fields for post entity on admin page.
+     *
+     * @param ListMapper $listMapper
+     */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -94,6 +116,9 @@ class PostAdmin extends AbstractAdmin
             ])
             ->add('subtitle', null, [
                 'header_style' => 'width: 20%; text-align: center',
+            ])
+            ->add('categories', null, [
+                'header_style' => 'width: 15%; text-align: center',
             ])
             ->add('tags', null, [
                 'header_style' => 'text-align: center',
@@ -107,16 +132,19 @@ class PostAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'actions' => [
-                    'show' => [],
                     'edit' => [],
-                    'delete' => [],
                 ],
-                'header_style' => 'width: 20%; text-align: center',
+                'header_style' => 'width: 10%; text-align: center',
                 'row_align' => 'center',
             ])
         ;
     }
 
+    /**
+     * Configure show fields for the post.
+     *
+     * @param ShowMapper $showMapper
+     */
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
@@ -139,6 +167,11 @@ class PostAdmin extends AbstractAdmin
             : 'Post'; // shown in the breadcrumb on the create view
     }
 
+    /**
+     * configure set publishedOn field on object creation.
+     *
+     * @param mixed $object
+     */
     public function prePersist($object)
     {
         if (!$object->isPublished()) {
@@ -146,6 +179,11 @@ class PostAdmin extends AbstractAdmin
         }
     }
 
+    /**
+     * * configure set publishedOn field on object update.
+     *
+     * @param mixed $object
+     */
     public function preUpdate($object)
     {
         if (!$object->isPublished()) {

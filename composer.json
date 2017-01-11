@@ -29,7 +29,9 @@
         "sonata-project/doctrine-orm-admin-bundle": "^3.1",
         "sonata-project/core-bundle": "^3.1",
         "sonata-project/block-bundle": "^3.2",
-        "knplabs/knp-menu-bundle": "^2.1"
+        "knplabs/knp-menu-bundle": "^2.1",
+        "whiteoctober/breadcrumbs-bundle": "^1.2",
+        "stof/doctrine-extensions-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
