@@ -46,7 +46,7 @@ services:
 
     blog.menu_builder:
             class: Olenaza\BlogBundle\Menu\MenuBuilder
-            arguments: ["@knp_menu.factory", "@service_container"]
+            arguments: ["@knp_menu.factory", "@=service('doctrine').getRepository('OlenazaBlogBundle:Category')"]
             tags:
                 - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
                 - { name: knp_menu.menu_builder, method: createBottomMenu, alias: bottom }

@@ -3,18 +3,18 @@
 namespace Olenaza\BlogBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Olenaza\BlogBundle\Repository\CategoryRepository;
 
 class MenuBuilder
 {
     private $factory;
 
-    private $container;
+    private $categoryRepository;
 
-    public function __construct(FactoryInterface $factory, ContainerInterface $container)
+    public function __construct(FactoryInterface $factory, CategoryRepository $categoryRepository)
     {
         $this->factory = $factory;
-        $this->container = $container;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -28,31 +28,47 @@ class MenuBuilder
 
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
 
-        $menu->addChild('Home', ['route' => 'welcome']);
+        $menu->addChild('Домівка', [
+            'route' => 'welcome',
+        ]);
 
-        $menu->addChild('Posts', [
+        $menu->addChild('Подорожні нотатки', [
+                'uri' => '#',
+                'linkAttributes' => [
+                    'class' => 'dropdown-toggle',
+                    'data-toggle' => 'dropdown',
+                ],
+                'childrenAttributes' => [
+                    'class' => 'dropdown-menu',
+                ],
+                'attributes' => [
+                    'class' => 'dropdown',
+                ],
+            ])
+        ;
+
+        $menu['Подорожні нотатки']->addChild('Усі записи', [
             'route' => 'posts_list',
         ]);
 
-        $rootCategories = $this->container
-            ->get('doctrine')
-            ->getRepository('OlenazaBlogBundle:Category')
+        $rootCategories = $this->categoryRepository
             ->getRootNodes();
 
         foreach ($rootCategories as $rootCategory) {
-            $menu['Posts']->addChild($rootCategory->getTitle());
+            $menu['Подорожні нотатки']->addChild($rootCategory->getTitle());
 
             $childCategories = $rootCategory->getChildren();
 
             foreach ($childCategories as $childCategory) {
-                $menu['Posts']->addChild($childCategory->getTitle(), [
+                $menu['Подорожні нотатки']->addChild($childCategory->getTitle(), [
                     'route' => 'posts_list_by_category',
-                    'routeParameters' => ['categoryId' => $childCategory->getId()],
+                    'routeParameters' => ['categorySlug' => $childCategory->getSlug()],
                 ]);
             }
         }
 
-        $menu->addChild('About', ['route' => 'about']);
+        $menu->addChild('Про автора', [
+            'route' => 'about']);
 
         return $menu;
     }

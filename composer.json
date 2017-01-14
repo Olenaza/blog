@@ -24,14 +24,14 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "bower-asset/bootstrap": "^3.3",
         "bower-asset/jquery": "^3.1",
-        "bower-asset/select2": "^4.0",
         "sonata-project/admin-bundle": "^3.10",
         "sonata-project/doctrine-orm-admin-bundle": "^3.1",
         "sonata-project/core-bundle": "^3.1",
         "sonata-project/block-bundle": "^3.2",
         "knplabs/knp-menu-bundle": "^2.1",
         "whiteoctober/breadcrumbs-bundle": "^1.2",
-        "stof/doctrine-extensions-bundle": "^1.2"
+        "stof/doctrine-extensions-bundle": "^1.2",
+        "knplabs/knp-paginator-bundle": "^2.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
