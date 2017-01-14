@@ -162,7 +162,6 @@ class Post
 
     public function __construct()
     {
-        $this->publishedOn = new \DateTime('today');
         $this->tags = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }

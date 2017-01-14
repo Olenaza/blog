@@ -4,17 +4,14 @@
 
 {% block content %}
 
-    {% for flashMessage in app.session.flashBag.get('notice') %}
-        <div class="flash-notice">
-            {{ flashMessage }}
-        </div>
-    {% endfor %}
-
-    <h1>Подорожі</h1>
-
-    {% if tag is defined %}
-        <p>за тегом {{ tag.name }}</p>
-    {% endif %}
+    <h2>Подорожні нотатки</h2>
+    <h3>
+        {% if tagName is defined %}
+            <p>за тегом {{ tagName }}</p>
+        {% else %}
+            {{ wo_render_breadcrumbs() }}
+        {% endif %}
+    </h3>
     <hr>
 
     {% include "OlenazaBlogBundle:post:_partials_posts_list.html.twig" %}

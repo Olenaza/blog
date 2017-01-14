@@ -2,11 +2,27 @@
 
 {% block content %}
 
-    <h3>
-        <p>Останні опубліковані пости</p>
-        <br>
-        {% include "OlenazaBlogBundle:post:_partials_posts_list.html.twig" %}
+    <h3>Останні опубліковані записи</h3>
+    <br>
+    <table class="table">
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td class="col-md-2">{{ post.publishedOn | date('Y-m-d')}}</td>
+                <td>
+                    <div>
+                        <a href="{{ path('post_show', {'slug': post.slug}) }}">{{ post.title|upper }}</a>
 
-        <p>Нові фотоальбоми</p>
-    </h3>
+                    </div>
+                    <div>
+                        {{ post.beginning | trim('.') | add_ellipsis }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Нові фотоальбоми</h3>
+
 {% endblock %}

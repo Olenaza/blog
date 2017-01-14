@@ -1,12 +1,31 @@
-{% for post in posts  %}
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <li><a href="{{ path('post_show', {'slug': post.slug}) }}">{{ post.title|upper }}</a></li>
-                </div>
-                <div class="panel-body">{{ post.beginning | trim('.') | add_ellipsis }}</div>
-            </div>
-        </div>
-    </div>
-{% endfor %}
+<div class="count">
+    Знайдено записів: {{ pagination.getTotalItemCount }}
+</div>
+<br>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="col-md-2">{{ knp_pagination_sortable(pagination, 'Дата публікації', ['p.publishedOn']) }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Заголовок', 'p.title') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in pagination %}
+            <tr>
+                <td>{{ post.publishedOn | date('Y-m-d')}}</td>
+                <td>
+                    <div>
+                        <a href="{{ path('post_show', {'slug': post.slug}) }}">{{ post.title|upper }}</a>
+
+                    </div>
+                    <div>
+                        {{ post.beginning | trim('.') | add_ellipsis }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="navigation">
+    {{ knp_pagination_render(pagination) }}
+</div>

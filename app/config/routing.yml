@@ -1,4 +1,4 @@
-olenaza_blog_homepage:
+olenaza_blog_pages:
     resource: "@OlenazaBlogBundle/Resources/config/routing.yml"
 
 olenaza_blog_posts:

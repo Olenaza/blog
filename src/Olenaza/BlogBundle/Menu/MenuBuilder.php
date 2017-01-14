@@ -68,7 +68,7 @@ class MenuBuilder
         }
 
         $menu->addChild('Про автора', [
-            'route' => 'about']);
+            'route' => 'about', ]);
 
         return $menu;
     }

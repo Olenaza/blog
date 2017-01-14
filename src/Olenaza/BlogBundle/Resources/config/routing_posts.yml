@@ -1,30 +1,30 @@
+posts_list_by_category:
+    path:     /category/{categorySlug}/{page}
+    defaults: { _controller: OlenazaBlogBundle:Post:listByCategory, page: 1 }
+    methods: [GET]
+    requirements:
+        page: '\d+'
+
+posts_list_by_tag:
+    path:     /tag/{tagName}/{page}
+    defaults: { _controller: OlenazaBlogBundle:Post:listByTag, page: 1 }
+    methods: [GET]
+    requirements:
+        page: '\d+'
+
 posts_list:
     path:     /{page}
-    defaults: { _controller: OlenazaBlogBundle:Post:list, page: 1 }
-    methods: [GET]
+    defaults: { _controller: OlenazaBlogBundle:Post:list, page: 1}
     requirements:
-      page: '\d+'
-
-posts_list_by_publication_date:
-    path:     /by-publication-date/{page}
-    defaults: { _controller: OlenazaBlogBundle:Post:listByPublicationDate, page: 1 }
-    methods: [GET]
-    requirements:
-      page: '\d+'
-
-posts_list_by_category:
-    path:     /category/{categoryId}
-    defaults: { _controller: OlenazaBlogBundle:Category:showPosts }
-    methods: [GET]
-
-posts_list_no_page:
-    path:     /
-    defaults:
-      _controller: FrameworkBundle:Redirect:urlRedirect
-      path: /posts
-      permanent: true
-    methods: [GET]
+        page: '\d+'
 
 post_show:
     path:     /{slug}
     defaults: { _controller: OlenazaBlogBundle:Post:show, slug: 2 }
+
+remove_trailing_slash:
+    path: /{url}
+    defaults: { _controller: OlenazaBlogBundle:Redirecting:removeTrailingSlash }
+    requirements:
+        url: .*/$
+    methods: [GET]

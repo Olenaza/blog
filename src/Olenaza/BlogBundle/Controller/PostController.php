@@ -3,7 +3,6 @@
 namespace Olenaza\BlogBundle\Controller;
 
 use Olenaza\BlogBundle\Entity\Comment;
-use Olenaza\BlogBundle\Entity\Post;
 use Olenaza\BlogBundle\Form\Type\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,48 +11,73 @@ use Symfony\Component\HttpFoundation\Response;
 class PostController extends Controller
 {
     /**
-     * Show posts list.
+     * @param Request $request
      *
      * @return Response
      */
     public function listAction($page)
     {
-        $posts = $this->getDoctrine()
-            ->getRepository('OlenazaBlogBundle:Post')
-            ->findAll();
-
-        return $this->render('OlenazaBlogBundle:post:index.html.twig', [
-            'posts' => $posts,
-            'page' => $page,
-        ]);
-    }
-
-    /**
-     * Show posts list sorted by publication date.
-     *
-     * @return Response
-     */
-    public function listByPublicationDateAction($page)
-    {
-        $posts = $this->getDoctrine()
+        $query = $this->getDoctrine()
             ->getRepository('OlenazaBlogBundle:Post')
             ->findAllOrderedByPublicationDate();
 
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($query, $page, 5);
+
         return $this->render('OlenazaBlogBundle:post:index.html.twig', [
-            'posts' => $posts,
-            'page' => $page,
+            'pagination' => $pagination,
         ]);
     }
 
     /**
-     * Show post details.
+     * @param $categorySlug
+     * @param $page
+     *
+     * @return Response
+     */
+    public function listByCategoryAction($categorySlug, $page)
+    {
+        $query = $this->getDoctrine()
+            ->getRepository('OlenazaBlogBundle:Post')
+            ->findByCategory($categorySlug);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($query, $page, 5);
+
+        return $this->render('OlenazaBlogBundle:post:index.html.twig', [
+            'pagination' => $pagination,
+        ]);
+    }
+
+    /**
+     * @param $tagName
+     * @param $page
+     *
+     * @return Response
+     */
+    public function listByTagAction($tagName, $page)
+    {
+        $query = $this->getDoctrine()
+            ->getRepository('OlenazaBlogBundle:Post')
+            ->findByTag($tagName);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($query, $page, 5);
+
+        return $this->render('OlenazaBlogBundle:post:index.html.twig', [
+            'pagination' => $pagination,
+            'tagName' => $tagName,
+        ]);
+    }
+
+    /**
+     * @param $slug
+     * @param Request $request
      *
      * @return Response
      */
     public function showAction($slug, Request $request)
     {
-        $access = true;
-
         $post = $this->getDoctrine()
             ->getRepository('OlenazaBlogBundle:Post')
             ->findOneBy([
@@ -79,7 +103,6 @@ class PostController extends Controller
 
         return $this->render('OlenazaBlogBundle:post:post_show.html.twig', [
             'post' => $post,
-            'access' => $access,
             'form' => $form->createView(),
         ]);
     }
