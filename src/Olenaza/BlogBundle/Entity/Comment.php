@@ -4,6 +4,7 @@ namespace Olenaza\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as SymfonyConstraint;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="comment")
@@ -27,9 +28,16 @@ class Comment
     private $text;
 
     /**
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $publishedAt;
+
+    /**
+     * @Gedmo\Timestampable(on="change", field="text")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     /**
      * @ORM\ManyToOne(
@@ -93,7 +101,27 @@ class Comment
     }
 
     /**
-     * @return \Olenaza\BlogBundle\Entity\Post
+     * @param \DateTime $updatedAt
+     *
+     * @return Comment
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @return Post
      */
     public function getPost()
     {

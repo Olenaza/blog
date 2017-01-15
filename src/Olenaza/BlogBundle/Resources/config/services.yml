@@ -34,14 +34,14 @@ services:
                   label: "Category"
                   show_mosaic_button: false
 
-    admin.about:
-        class: Olenaza\BlogBundle\Admin\AboutPageAdmin
-        arguments: [~, Olenaza\BlogBundle\Entity\AboutPage, ~]
+    admin.settings:
+        class: Olenaza\BlogBundle\Admin\SettingAdmin
+        arguments: [~, Olenaza\BlogBundle\Entity\Setting, ~]
         tags:
             - name: sonata.admin
               manager_type: orm
-              group: "Pages"
-              label: "About Page"
+              group: "Pages and Settings"
+              label: "Page/Setting"
               show_mosaic_button: false
 
     blog.menu_builder:

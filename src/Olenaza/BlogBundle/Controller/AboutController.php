@@ -8,18 +8,16 @@ use Symfony\Component\HttpFoundation\Response;
 class AboutController extends Controller
 {
     /**
-     * Show About page content.
-     *
      * @return Response
      */
     public function indexAction()
     {
-        $content = $this->getDoctrine()
-            ->getRepository('OlenazaBlogBundle:AboutPage')
-            ->findOneBy(['id' => 1]);
+        $aboutPage = $this->getDoctrine()
+            ->getRepository('OlenazaBlogBundle:Setting')
+            ->findOneBy(['slug' => 'about-page']);
 
         return $this->render('OlenazaBlogBundle:about:index.html.twig', [
-            'about' => $content,
+            'about' => $aboutPage,
         ]);
     }
 }

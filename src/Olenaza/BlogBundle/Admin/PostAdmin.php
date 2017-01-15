@@ -88,7 +88,7 @@ class PostAdmin extends AbstractAdmin
     }
 
     /**
-     * Configure ffilters for post entity on admin page.
+     * Configure filters for post entity on admin page.
      *
      * @param DatagridMapper $datagridMapper
      */
@@ -180,7 +180,7 @@ class PostAdmin extends AbstractAdmin
     }
 
     /**
-     * * configure set publishedOn field on object update.
+     * configure set publishedOn field on object update.
      *
      * @param mixed $object
      */

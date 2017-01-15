@@ -118,6 +118,66 @@ class Category
     }
 
     /**
+     * @param string $slug
+     *
+     * @return Category
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param int $lft
+     *
+     * @return Category
+     */
+    public function setLft($lft)
+    {
+        $this->lft = $lft;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLft()
+    {
+        return $this->lft;
+    }
+
+    /**
+     * @param int $rgt
+     *
+     * @return Category
+     */
+    public function setRgt($rgt)
+    {
+        $this->rgt = $rgt;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRgt()
+    {
+        return $this->rgt;
+    }
+
+    /**
      * @param Category $parent
      */
     public function setParent(Category $parent)
@@ -131,14 +191,6 @@ class Category
     public function getParent()
     {
         return $this->parent;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 
     /**
@@ -175,5 +227,27 @@ class Category
     public function getPosts()
     {
         return $this->posts;
+    }
+
+    /**
+     * @param Category $child
+     *
+     * @return Category
+     */
+    public function addChild(Category $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child.
+     *
+     * @param Category $child
+     */
+    public function removeChild(Category $child)
+    {
+        $this->children->removeElement($child);
     }
 }

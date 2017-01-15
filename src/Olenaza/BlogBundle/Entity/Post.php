@@ -5,6 +5,7 @@ namespace Olenaza\BlogBundle\Entity;
 use Symfony\Component\Validator\Constraints as SymfonyConstraint;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormInterface;
 
@@ -115,7 +116,8 @@ class Post
     private $publishedOn;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $slug;
 
@@ -163,6 +165,7 @@ class Post
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
 
@@ -335,7 +338,7 @@ class Post
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getTags()
     {
@@ -343,7 +346,7 @@ class Post
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getCategories()
     {
@@ -351,33 +354,21 @@ class Post
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getComments()
     {
         return $this->comments;
     }
 
+    /**
+     * @param Tag $tag
+     */
     public function addTag(Tag $tag)
     {
         $tag->addPost($this);
-        //$this->tags[] = $tag;
+
         $this->tags->add($tag);
-    }
-
-    /**
-     * @param Category $category
-     */
-    public function removeCategory(Category $category)
-    {
-        $this->categories->removeElement($category);
-    }
-
-    public function addCategory(Category $category)
-    {
-        $category->addPost($this);
-
-        $this->categories->add($category);
     }
 
     /**
@@ -386,6 +377,24 @@ class Post
     public function removeTag(Tag $tag)
     {
         $this->tags->removeElement($tag);
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function addCategory(Category $category)
+    {
+        $category->addPost($this);
+
+        $this->categories->add($category);
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function removeCategory(Category $category)
+    {
+        $this->categories->removeElement($category);
     }
 
     /**

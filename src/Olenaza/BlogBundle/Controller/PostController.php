@@ -3,6 +3,7 @@
 namespace Olenaza\BlogBundle\Controller;
 
 use Olenaza\BlogBundle\Entity\Comment;
+use Olenaza\BlogBundle\Entity\Post;
 use Olenaza\BlogBundle\Form\Type\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,14 +77,8 @@ class PostController extends Controller
      *
      * @return Response
      */
-    public function showAction($slug, Request $request)
+    public function showAction(Post $post, Request $request)
     {
-        $post = $this->getDoctrine()
-            ->getRepository('OlenazaBlogBundle:Post')
-            ->findOneBy([
-                'slug' => $slug,
-            ]);
-
         $comment = new Comment($post);
 
         $form = $this->createForm(CommentType::class, $comment);
@@ -92,13 +87,12 @@ class PostController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $comment = $form->getData();
-            $comment->setPublishedAt(new \DateTime('now'));
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
 
-            return $this->redirectToRoute('post_show', ['slug' => $slug]);
+            return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
         }
 
         return $this->render('OlenazaBlogBundle:post:post_show.html.twig', [

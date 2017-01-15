@@ -10,19 +10,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommentType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('text', null, [
-            'label' => 'Leave comment',
+            'label' => 'Залишити коментар',
             'required' => false,
         ]);
 
         $builder->add('save', SubmitType::class, [
-            'label' => 'Send',
+            'label' => 'Відправити',
             'attr' => ['class' => 'save'],
         ]);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

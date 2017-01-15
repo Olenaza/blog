@@ -21,13 +21,23 @@
     {% if post.comments %}
         <br>
         <h4>Коментарі:</h4>
-        <ul>
-            {% for comment in post.comments %}
 
-                <li>{{ comment.text }}</li>
+        <div class="panel-group">
+            <div class="panel panel-default">
 
-            {% endfor %}
-        </ul>
+                {% for comment in post.comments %}
+
+                    <div class="panel-heading">
+
+                        {{ comment.updatedAt is empty ?
+                            ["Опублікований: ", comment.publishedAt|date("d/m/Y")]|join :
+                            ["Відредагований: ", comment.updatedAt|date("d/m/Y")]|join}}
+                    </div>
+                    <div class="panel-body">{{ comment.text }}</div>
+
+                {% endfor %}
+            </div>
+        </div>
     {% endif %}
     <br>
     {{ form(form) }}
