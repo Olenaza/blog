@@ -50,3 +50,7 @@ services:
             tags:
                 - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
                 - { name: knp_menu.menu_builder, method: createBottomMenu, alias: bottom }
+
+    blog.breadcrumbs_builder:
+                class: Olenaza\BlogBundle\Menu\BreadcrumbsBuilder
+                arguments: ["@white_october_breadcrumbs", "@=service('doctrine').getRepository('OlenazaBlogBundle:Category')"]

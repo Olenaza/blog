@@ -13,18 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 class PostController extends Controller
 {
     /**
-     * @param Request $request
+     * @param $page
      *
      * @return Response
      */
     public function listAction($page)
     {
-        $breadcrumbs = $this->get('white_october_breadcrumbs');
-
-        $breadcrumbs
-            ->addRouteItem('Домівка', 'welcome')
-            ->addItem('Усі записи')
-        ;
+        $breadcrumbs = $this->get('blog.breadcrumbs_builder')->createBreadcrumbs();
 
         $query = $this->getDoctrine()
             ->getRepository('OlenazaBlogBundle:Post')
@@ -39,21 +34,14 @@ class PostController extends Controller
     }
 
     /**
-     * @param $categorySlug
+     * @param Category $category
      * @param $page
      *
      * @return Response
      */
     public function listByCategoryAction(Category $category, $page)
     {
-        $breadcrumbs = $this->get('white_october_breadcrumbs');
-
-        $breadcrumbs
-            ->addItem($category->getTitle())
-            ->prependItem($category->getParent()->getTitle())
-            ->prependRouteItem('Усі записи', 'posts_list')
-            ->prependRouteItem('Домівка', 'welcome')
-        ;
+        $breadcrumbs = $this->get('blog.breadcrumbs_builder')->createBreadcrumbs($category->getSlug());
 
         $query = $this->getDoctrine()
             ->getRepository('OlenazaBlogBundle:Post')
@@ -69,20 +57,14 @@ class PostController extends Controller
     }
 
     /**
-     * @param $tagName
+     * @param $name
      * @param $page
      *
      * @return Response
      */
     public function listByTagAction($name, $page)
     {
-        $breadcrumbs = $this->get('white_october_breadcrumbs');
-
-        $breadcrumbs
-            ->addRouteItem('Домівка', 'welcome')
-            ->addRouteItem('Усі записи', 'posts_list')
-            ->addItem("Тег $name")
-        ;
+        $breadcrumbs = $this->get('blog.breadcrumbs_builder')->createBreadcrumbs(null, $name);
 
         $query = $this->getDoctrine()
             ->getRepository('OlenazaBlogBundle:Post')
@@ -98,47 +80,17 @@ class PostController extends Controller
     }
 
     /**
-     * @param $slug
+     * @param Post    $post
      * @param Request $request
      *
      * @return Response
      */
     public function showAction(Post $post, Request $request)
     {
-        $breadcrumbs = $this->get('white_october_breadcrumbs');
+        $breadcrumbs = $this->get('blog.breadcrumbs_builder')
+            ->createBreadcrumbs($request->query->get('categorySlug'), $request->query->get('tagName'));
 
-        if (!empty($request->query->get('categorySlug'))) {
-            $category = $this->getDoctrine()
-                ->getRepository('OlenazaBlogBundle:Category')
-                ->findOneBy(['slug' => $request->query->get('categorySlug')]);
-
-            $breadcrumbs
-                ->addItem('Запис')
-                ->prependRouteItem($category->getTitle(), 'posts_list_by_category', [
-                    'slug' => $category->getSlug(),
-                ])
-                ->prependItem($category->getParent()->getTitle())
-                ->prependRouteItem('Усі записи', 'posts_list')
-                ->prependRouteItem('Домівка', 'welcome')
-            ;
-        } elseif (!empty($request->query->get('tagName'))) {
-            $tagName = $request->query->get('tagName');
-
-            $breadcrumbs
-                ->addRouteItem('Домівка', 'welcome')
-                ->addRouteItem('Усі записи', 'posts_list')
-                ->addRouteItem("Тег $tagName", 'posts_list_by_tag', [
-                    'name' => $tagName,
-                ])
-                ->addItem('Запис')
-            ;
-        } else {
-            $breadcrumbs
-                ->addRouteItem('Домівка', 'welcome')
-                ->addRouteItem('Усі записи', 'posts_list')
-                ->addItem('Запис')
-            ;
-        }
+        $breadcrumbs->addItem($post->getTitle());
 
         $comment = new Comment($post);
 
