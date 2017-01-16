@@ -5,13 +5,9 @@
 {% block content %}
 
     <h2>Подорожні нотатки</h2>
-    <h3>
-        {% if tagName is defined %}
-            <p>за тегом {{ tagName }}</p>
-        {% else %}
-            {{ wo_render_breadcrumbs() }}
-        {% endif %}
-    </h3>
+    <h4>
+        {{ wo_render_breadcrumbs({separator: ''}) }}
+    </h4>
     <hr>
 
     {% include "OlenazaBlogBundle:post:_partials_posts_list.html.twig" %}

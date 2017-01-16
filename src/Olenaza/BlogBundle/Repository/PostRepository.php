@@ -22,35 +22,35 @@ class PostRepository extends EntityRepository
     }
 
     /**
-     * @param $categorySlug
+     * @param $slug
      *
      * @return \Doctrine\ORM\Query
      */
-    public function findByCategory($categorySlug)
+    public function findByCategory($slug)
     {
         return $this->createQueryBuilder('p')
             ->where('p.published = :published')
             ->innerJoin('p.categories', 'c', 'WITH',  'c.slug = :slug')
             ->setParameters([
                 'published' => true,
-                'slug' => $categorySlug,
+                'slug' => $slug,
             ])
             ->getQuery();
     }
 
     /**
-     * @param $tagName
+     * @param $name
      *
      * @return \Doctrine\ORM\Query
      */
-    public function findByTag($tagName)
+    public function findByTag($name)
     {
         return $this->createQueryBuilder('p')
             ->where('p.published = :published')
             ->innerJoin('p.tags', 't', 'WITH',  't.name = :name')
             ->setParameters([
                 'published' => true,
-                'name' => $tagName,
+                'name' => $name,
             ])
             ->getQuery();
     }

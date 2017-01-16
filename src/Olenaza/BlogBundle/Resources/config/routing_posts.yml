@@ -1,12 +1,12 @@
 posts_list_by_category:
-    path:     /category/{categorySlug}/{page}
+    path:     /category/{slug}/{page}
     defaults: { _controller: OlenazaBlogBundle:Post:listByCategory, page: 1 }
     methods: [GET]
     requirements:
         page: '\d+'
 
 posts_list_by_tag:
-    path:     /tag/{tagName}/{page}
+    path:     /tag/{name}/{page}
     defaults: { _controller: OlenazaBlogBundle:Post:listByTag, page: 1 }
     methods: [GET]
     requirements:

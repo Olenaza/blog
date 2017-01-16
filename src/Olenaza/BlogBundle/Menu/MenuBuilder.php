@@ -62,7 +62,7 @@ class MenuBuilder
             foreach ($childCategories as $childCategory) {
                 $menu['Подорожні нотатки']->addChild($childCategory->getTitle(), [
                     'route' => 'posts_list_by_category',
-                    'routeParameters' => ['categorySlug' => $childCategory->getSlug()],
+                    'routeParameters' => ['slug' => $childCategory->getSlug()],
                 ]);
             }
         }

@@ -15,8 +15,10 @@
                 <td>{{ post.publishedOn | date('Y-m-d')}}</td>
                 <td>
                     <div>
-                        <a href="{{ path('post_show', {'slug': post.slug}) }}">{{ post.title|upper }}</a>
+                        <a href="{{ path('post_show', {'slug': post.slug, 'tagName': tagName|default(''), 'categorySlug': categorySlug|default('')}) }}">
 
+                            {{ post.title|upper }}
+                        </a>
                     </div>
                     <div>
                         {{ post.beginning | trim('.') | add_ellipsis }}
