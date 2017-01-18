@@ -15,8 +15,10 @@ class PostRepository extends EntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.published = :published')
+            ->andWhere('p.publishedOn <= :today')
             ->orderBy('p.publishedOn', 'DESC')
             ->setParameter('published', true)
+            ->setParameter('today', new \DateTime('today'))
             ->setMaxResults($limit)
             ->getQuery();
     }
@@ -30,10 +32,12 @@ class PostRepository extends EntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.published = :published')
+            ->andWhere('p.publishedOn <= :today')
             ->innerJoin('p.categories', 'c', 'WITH',  'c.slug = :slug')
             ->setParameters([
                 'published' => true,
                 'slug' => $slug,
+                'today' => new \DateTime('today'),
             ])
             ->getQuery();
     }
@@ -47,10 +51,12 @@ class PostRepository extends EntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.published = :published')
+            ->andWhere('p.publishedOn <= :today')
             ->innerJoin('p.tags', 't', 'WITH',  't.name = :name')
             ->setParameters([
                 'published' => true,
                 'name' => $name,
+                'today' => new \DateTime('today'),
             ])
             ->getQuery();
     }
