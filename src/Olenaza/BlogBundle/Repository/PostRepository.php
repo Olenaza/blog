@@ -60,4 +60,31 @@ class PostRepository extends EntityRepository
             ])
             ->getQuery();
     }
+
+    /**
+     * @param $fragment
+     *
+     * @return \Doctrine\ORM\Query
+     */
+    public function findByFragment($fragment)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->where($qb->expr()->andX(
+                $qb->expr()->eq('p.published', ':published'),
+                $qb->expr()->lte('p.publishedOn', ':today')
+            ))
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->like('p.title', ':fragment'),
+                $qb->expr()->like('p.text', ':fragment')
+            ))
+            ->setParameters([
+                'published' => true,
+                'today' => new \DateTime('today'),
+                'fragment' => "%$fragment%",
+            ]);
+
+        return $qb->getQuery();
+    }
 }

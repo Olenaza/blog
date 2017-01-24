@@ -12,6 +12,13 @@ posts_list_by_tag:
     requirements:
         page: '\d+'
 
+posts_search:
+    path:     /search/{page}
+    defaults: { _controller: OlenazaBlogBundle:Post:search, page: 1 }
+    methods: [GET]
+    requirements:
+        page: '\d+'
+
 posts_list:
     path:     /{page}
     defaults: { _controller: OlenazaBlogBundle:Post:list, page: 1}

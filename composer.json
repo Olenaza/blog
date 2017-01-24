@@ -31,7 +31,8 @@
         "knplabs/knp-menu-bundle": "^2.1",
         "whiteoctober/breadcrumbs-bundle": "^1.2",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "knplabs/knp-paginator-bundle": "^2.5"
+        "knplabs/knp-paginator-bundle": "^2.5",
+        "friendsofsymfony/user-bundle": "~2.0@dev"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

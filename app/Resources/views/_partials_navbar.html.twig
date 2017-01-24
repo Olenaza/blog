@@ -1,21 +1,56 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid">
-        <div class="navbar-header">
-            <!-- Collapsed Hamburger -->
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                <span class="sr-only">Toggle Navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-                <!-- Branding Image -->
-            <a class="navbar-brand" href="{{ path('welcome') }}">
-                Блог
-            </a>
-        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-6">
+                <div class="navbar-header">
+                    <!-- Collapsed Hamburger -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                        <!-- Branding Image -->
+                    <a class="navbar-brand" href="{{ path('welcome') }}">
+                        Блог
+                    </a>
+                </div>
 
-        <div class="collapse navbar-collapse" id="app-navbar-collapse">
-            {{ knp_menu_render('main') }}
+                <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                    {{ knp_menu_render('main') }}
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <form action="{{ path('posts_search') }}" class="navbar-form navbar-left">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="fragment" placeholder="Пошук за фрагментом">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if is_granted('ROLE_USER') %}
+                        <li><a href="{{ path('fos_user_profile_show') }}">
+                                <span class="glyphicon glyphicon-user"></span> Profile</a>
+                        </li>
+                        <li><a href="{{ path('fos_user_security_logout') }}">
+                                <span class="glyphicon glyphicon-log-out"></span> Log out</a>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ path('fos_user_registration_register') }}">
+                                <span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                        </li>
+                        <li><a href="{{ path('fos_user_security_login') }}">
+                                <span class="glyphicon glyphicon-log-in"></span> Log in</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
 </nav>
@@ -23,7 +58,9 @@
 <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
 
     <div class="collapse navbar-collapse" id="app-navbar-collapse">
-        {{ knp_menu_render('bottom') }}
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ knp_menu_render('bottom') }}
+        {% endif %}
     </div>
 
 </nav>
