@@ -1,0 +1,17 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block fos_user_content %}
+
+    <h2>Профіль</h2>
+    <hr>
+    {% include "@FOSUser/Profile/show_content.html.twig" %}
+    <br>
+    <div>
+        <a href="{{ path('fos_user_profile_edit') }}">Змінити дані</a>
+    </div>
+    <br>
+    <div>
+        <a href="{{ path('fos_user_change_password') }}">Змінити пароль</a>
+    </div>
+
+{% endblock fos_user_content %}
