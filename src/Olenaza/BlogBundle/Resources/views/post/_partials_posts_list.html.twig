@@ -7,6 +7,7 @@
         <tr>
             <th class="col-md-2">{{ knp_pagination_sortable(pagination, 'Дата публікації', ['p.publishedOn']) }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'Заголовок', 'p.title') }}</th>
+            <th>Вподобань</th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
                         {{ post.beginning | trim('.') | add_ellipsis }}
                     </div>
                 </td>
+                <td>{{ post.likes | length}}</td>
             </tr>
         {% endfor %}
     </tbody>

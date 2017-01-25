@@ -162,11 +162,21 @@ class Post
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(
+     *      targetEntity="Like",
+     *      mappedBy="post",
+     *      orphanRemoval=true
+     * )
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     /**
@@ -362,6 +372,14 @@ class Post
     }
 
     /**
+     * @return ArrayCollection
+     */
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+
+    /**
      * @param Tag $tag
      */
     public function addTag(Tag $tag)
@@ -415,6 +433,26 @@ class Post
     public function removeComment(Comment $comment)
     {
         $this->comments->removeElement($comment);
+    }
+
+    /**
+     * @param Like $like
+     *
+     * @return Post
+     */
+    public function addLike(Like $like)
+    {
+        $this->likes[] = $like;
+
+        return $this;
+    }
+
+    /**
+     * @param Like $like
+     */
+    public function removeLike(Like $like)
+    {
+        $this->likes->removeElement($like);
     }
 
     /**

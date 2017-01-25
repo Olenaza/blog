@@ -20,6 +20,11 @@
 
         {% endfor %}
     </ul>
+
+    <form action="{{ path('post_like', {'slug': post.slug, 'username': app.user.username}) }}">
+        <button type="submit" class="btn btn-default">Вподобати</button>
+    </form>
+
     {% if post.comments %}
         <br>
         <h4>Коментарі:</h4>

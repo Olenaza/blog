@@ -1,21 +1,18 @@
 posts_list_by_category:
     path:     /category/{slug}/{page}
     defaults: { _controller: OlenazaBlogBundle:Post:listByCategory, page: 1 }
-    methods: [GET]
     requirements:
         page: '\d+'
 
 posts_list_by_tag:
     path:     /tag/{name}/{page}
     defaults: { _controller: OlenazaBlogBundle:Post:listByTag, page: 1 }
-    methods: [GET]
     requirements:
         page: '\d+'
 
 posts_search:
     path:     /search/{page}
     defaults: { _controller: OlenazaBlogBundle:Post:search, page: 1 }
-    methods: [GET]
     requirements:
         page: '\d+'
 
@@ -25,9 +22,13 @@ posts_list:
     requirements:
         page: '\d+'
 
+post_like:
+    path:     /{slug}/like/{username}
+    defaults: { _controller: OlenazaBlogBundle:Like:create}
+
 post_show:
     path:     /{slug}
-    defaults: { _controller: OlenazaBlogBundle:Post:show, slug: 2 }
+    defaults: { _controller: OlenazaBlogBundle:Post:show}
 
 remove_trailing_slash:
     path: /{url}
