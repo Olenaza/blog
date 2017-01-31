@@ -4,8 +4,10 @@ namespace Olenaza\BlogBundle\Controller;
 
 use Olenaza\BlogBundle\Entity\Category;
 use Olenaza\BlogBundle\Entity\Comment;
+use Olenaza\BlogBundle\Entity\Like;
 use Olenaza\BlogBundle\Entity\Post;
 use Olenaza\BlogBundle\Form\Type\CommentType;
+use Olenaza\BlogBundle\Form\Type\LikeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,8 +82,9 @@ class PostController extends Controller
     }
 
     /**
-     * @param Post    $post
-     * @param Request $request
+     * @param Post           $post
+     * @param Request        $request
+     * @param TokenInterface $token
      *
      * @return Response
      */
@@ -94,12 +97,12 @@ class PostController extends Controller
 
         $comment = new Comment($post);
 
-        $form = $this->createForm(CommentType::class, $comment);
+        $commentForm = $this->createForm(CommentType::class, $comment);
 
-        $form->handleRequest($request);
+        $commentForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comment = $form->getData();
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment = $commentForm->getData();
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
@@ -108,9 +111,30 @@ class PostController extends Controller
             return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
         }
 
+        $like = new Like($post);
+
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $user = $this->getUser();
+
+            $like->setUser($user);
+        }
+
+        $likeForm = $this->createForm(LikeType::class, $like);
+
+        $likeForm->handleRequest($request);
+
+        if ($likeForm->isSubmitted() && $likeForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($like);
+            $em->flush();
+
+            return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+        }
+
         return $this->render('OlenazaBlogBundle:post:post_show.html.twig', [
             'post' => $post,
-            'form' => $form->createView(),
+            'commentForm' => $commentForm->createView(),
+            'likeForm' => $likeForm->createView(),
         ]);
     }
 

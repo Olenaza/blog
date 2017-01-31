@@ -3,6 +3,7 @@
 namespace Olenaza\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as SymfonyConstraint;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -28,6 +29,9 @@ class Like
      *      targetEntity="User",
      *      inversedBy="likes"
      * )
+     * @SymfonyConstraint\NotBlank(
+     *     message = "Авторизуйтеся, щоб вподобати цей запис"
+     * )
      */
     private $user;
 
@@ -39,10 +43,9 @@ class Like
      */
     private $post;
 
-    public function __construct(Post $post, User $user)
+    public function __construct(Post $post)
     {
         $this->post = $post;
-        $this->user = $user;
     }
 
     /**
@@ -67,5 +70,17 @@ class Like
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
