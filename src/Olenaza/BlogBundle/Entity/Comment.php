@@ -47,9 +47,18 @@ class Comment
      */
     private $post;
 
-    public function __construct(Post $post)
+    /**
+     * @ORM\ManyToOne(
+     *      targetEntity="User",
+     *      inversedBy="comments"
+     * )
+     */
+    private $user;
+
+    public function __construct(Post $post, User $user)
     {
         $this->post = $post;
+        $this->user = $user;
     }
 
     /**
@@ -126,5 +135,13 @@ class Comment
     public function getPost()
     {
         return $this->post;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

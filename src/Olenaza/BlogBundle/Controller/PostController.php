@@ -95,20 +95,22 @@ class PostController extends Controller
 
         $breadcrumbs->addItem($post->getTitle());
 
-        $comment = new Comment($post);
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $comment = new Comment($post, $this->getUser());
 
-        $commentForm = $this->createForm(CommentType::class, $comment);
+            $commentForm = $this->createForm(CommentType::class, $comment);
 
-        $commentForm->handleRequest($request);
+            $commentForm->handleRequest($request);
 
-        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $comment = $commentForm->getData();
+            if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+                $comment = $commentForm->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($comment);
+                $em->flush();
 
-            return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+                return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
+            }
         }
 
         $like = new Like($post);
@@ -131,11 +133,18 @@ class PostController extends Controller
             return $this->redirectToRoute('post_show', ['slug' => $post->getSlug()]);
         }
 
-        return $this->render('OlenazaBlogBundle:post:post_show.html.twig', [
-            'post' => $post,
-            'commentForm' => $commentForm->createView(),
-            'likeForm' => $likeForm->createView(),
-        ]);
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->render('OlenazaBlogBundle:post:post_show.html.twig', [
+                'post' => $post,
+                'commentForm' => $commentForm->createView(),
+                'likeForm' => $likeForm->createView(),
+            ]);
+        } else {
+            return $this->render('OlenazaBlogBundle:post:post_show.html.twig', [
+                'post' => $post,
+                'likeForm' => $likeForm->createView(),
+            ]);
+        }
     }
 
     /**

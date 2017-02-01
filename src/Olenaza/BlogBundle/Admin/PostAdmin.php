@@ -33,9 +33,11 @@ class PostAdmin extends AbstractAdmin
                     'help' => '* This field is required',
                 ])
                 ->add('subtitle')
-                ->add('text', null, [
+                ->add('text', 'sonata_simple_formatter_type', [
                     'required' => false,
                     'label' => 'Text **',
+                    'format' => 'richhtml',
+                    'attr' => ['class' => 'ckeditor'],
                     ])
                 ->add('beginning', null, [
                     'required' => false,
