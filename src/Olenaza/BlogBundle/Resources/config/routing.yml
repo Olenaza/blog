@@ -5,3 +5,9 @@ welcome:
 about:
     path:     /about
     defaults: { _controller: OlenazaBlogBundle:About:index }
+
+comment_update:
+    path:     /comments/{id}/update
+    defaults: { _controller: OlenazaBlogBundle:Comment:edit}
+    requirements:
+        id: '\d+'

@@ -82,13 +82,13 @@ class PostController extends Controller
     }
 
     /**
-     * @param Post           $post
-     * @param Request        $request
-     * @param TokenInterface $token
+     * @param Post    $post
+     * @param Request $request
+     * @param int     $commentToEditId
      *
      * @return Response
      */
-    public function showAction(Post $post, Request $request)
+    public function showAction(Post $post, Request $request, $commentToEditId = null)
     {
         $breadcrumbs = $this->get('blog.breadcrumbs_builder')
             ->createBreadcrumbs($request->query->get('categorySlug'), $request->query->get('tagName'));
@@ -138,6 +138,7 @@ class PostController extends Controller
                 'post' => $post,
                 'commentForm' => $commentForm->createView(),
                 'likeForm' => $likeForm->createView(),
+                'commentToEditId' => $commentToEditId,
             ]);
         } else {
             return $this->render('OlenazaBlogBundle:post:post_show.html.twig', [

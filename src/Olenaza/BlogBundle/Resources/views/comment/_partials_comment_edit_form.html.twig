@@ -1,0 +1,9 @@
+{{ form_start(commentEditForm, {'action': path('comment_update', {'id': id })}) }}
+    {{ form_errors(commentEditForm) }}
+
+    {{ form_errors(commentEditForm.text) }}
+    {{ form_widget(commentEditForm.text) }}
+
+    {{ form_row(commentEditForm.save, { 'label': 'Зберегти' }) }}
+
+{{ form_end(commentEditForm) }}

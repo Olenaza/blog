@@ -22,6 +22,12 @@ posts_list:
     requirements:
         page: '\d+'
 
+post_comment_edit:
+    path:     /{slug}/comment/{commentToEditId}/edit
+    defaults: { _controller: OlenazaBlogBundle:Post:show}
+    requirements:
+        commentEditId: '\d+'
+
 post_like:
     path:     /{slug}/like/{username}
     defaults: { _controller: OlenazaBlogBundle:Like:create}

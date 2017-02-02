@@ -54,3 +54,11 @@ services:
     blog.breadcrumbs_builder:
                 class: Olenaza\BlogBundle\Menu\BreadcrumbsBuilder
                 arguments: ["@white_october_breadcrumbs", "@=service('doctrine').getRepository('OlenazaBlogBundle:Category')"]
+
+    blog.comment_voter:
+           class: Olenaza\BlogBundle\Security\CommentVoter
+           arguments: ['@security.access.decision_manager']
+           tags:
+               - { name: security.voter }
+           # small performance boost
+           public: false

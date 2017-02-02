@@ -8,7 +8,7 @@
 
     <h3>{{ post.title }}</h3>
     <hr>
-    <div>{{ post.text }}</div>
+    <div>{{ post.text|raw }}</div>
     <br>
     <h4>Теги:</h4>
     <ul>
@@ -23,29 +23,7 @@
     <br>
     {{ form(likeForm) }}
 
-    {% if post.comments %}
-        <br>
-        <h4>Коментарі:</h4>
-
-        <div class="panel-group">
-            <div class="panel panel-default">
-
-                {% for comment in post.comments %}
-
-                    <div class="panel-heading">
-
-                        {{ comment.user }}
-
-                        {{ comment.updatedAt is empty ?
-                            ["Опублікований: ", comment.publishedAt|date("d/m/Y")]|join :
-                            ["Відредагований: ", comment.updatedAt|date("d/m/Y")]|join}}
-                    </div>
-                    <div class="panel-body">{{ comment.text }}</div>
-
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
+    {% include "OlenazaBlogBundle:post:_partials_post_comments_list.html.twig" %}
     <br>
     {% if commentForm is defined %}
         {{ form(commentForm) }}

@@ -1,0 +1,38 @@
+{% if post.comments %}
+    <br>
+    <h4>Коментарі:</h4>
+
+    <div class="panel-group">
+        <div class="panel panel-default">
+
+            {% for comment in post.comments %}
+
+                <div class="panel-heading">
+
+                    {{ comment.user }}
+
+                    {{ comment.updatedAt is empty ?
+                    ["Опублікований: ", comment.publishedAt|date("d/m/Y")]|join :
+                    ["Відредагований: ", comment.updatedAt|date("d/m/Y")]|join}}
+
+                    {% if app.user.id == comment.user.id %}
+                        <a href="{{ path('post_comment_edit', {'slug': post.slug, 'commentToEditId': comment.id}) }}">
+                            Edit
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="panel-body">
+                    {% if commentToEditId is defined and commentToEditId == comment.id %}
+                        {{ render(controller(
+                            'OlenazaBlogBundle:Comment:edit',
+                            { 'id': commentToEditId }
+                        )) }}
+                    {% else %}
+                        {{ comment.text }}
+                    {% endif %}
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
