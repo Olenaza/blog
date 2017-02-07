@@ -11,9 +11,11 @@ class WelcomeController extends Controller
      */
     public function indexAction()
     {
+        $limit = $this->container->getParameter('recent_posts_number');
+
         $posts = $this->getDoctrine()
             ->getRepository('OlenazaBlogBundle:Post')
-            ->findAllOrderedByPublicationDate(3)
+            ->findAllOrderedByPublicationDate($limit)
             ->getResult()
         ;
 

@@ -154,3 +154,7 @@ fos_user:
     firewall_name: main
     user_class: Olenaza\BlogBundle\Entity\User
     use_username_form_type: false
+
+olenaza_blog:
+    posts_per_page: 7
+    recent_posts_number: 3

@@ -28,7 +28,8 @@ class PostController extends Controller
             ->findAllOrderedByPublicationDate();
 
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $page, 5);
+        $limit = $this->container->getParameter('posts_per_page');
+        $pagination = $paginator->paginate($query, $page, $limit);
 
         return $this->render('OlenazaBlogBundle:post:index.html.twig', [
             'pagination' => $pagination,
@@ -50,7 +51,8 @@ class PostController extends Controller
             ->findByCategory($category->getSlug());
 
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $page, 5);
+        $limit = $this->container->getParameter('posts_per_page');
+        $pagination = $paginator->paginate($query, $page, $limit);
 
         return $this->render('OlenazaBlogBundle:post:index.html.twig', [
             'pagination' => $pagination,
@@ -73,7 +75,8 @@ class PostController extends Controller
             ->findByTag($name);
 
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $page, 5);
+        $limit = $this->container->getParameter('posts_per_page');
+        $pagination = $paginator->paginate($query, $page, $limit);
 
         return $this->render('OlenazaBlogBundle:post:index.html.twig', [
             'pagination' => $pagination,
@@ -165,7 +168,8 @@ class PostController extends Controller
             ->findByFragment($request->query->get('fragment'));
 
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($query, $page, 5);
+        $limit = $this->container->getParameter('posts_per_page');
+        $pagination = $paginator->paginate($query, $page, $limit);
 
         return $this->render('OlenazaBlogBundle:post:index.html.twig', [
             'pagination' => $pagination,
