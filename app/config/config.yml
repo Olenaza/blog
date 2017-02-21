@@ -158,3 +158,24 @@ fos_user:
 olenaza_blog:
     posts_per_page: 7
     recent_posts_number: 3
+
+hwi_oauth:
+    # list of names of the firewalls in which this bundle is active, this setting MUST be set
+    firewall_names: [main]
+    target_path_parameter: _destination
+    use_referer: true
+    connect:
+        account_connector: blog.user_provider
+    fosub:
+        username_iterations: 30
+        properties:
+            facebook:    facebook_id
+    resource_owners:
+        facebook:
+            type: facebook
+            client_id: 1711978655760667
+            client_secret: 432bf783f1287eccf16add0e5c537574
+            scope: "email, public_profile"
+            options:
+                display: popup #dialog is optimized for popup window
+                csrf: true

@@ -2,7 +2,7 @@ services:
     twig.extension.add_ellipsis:
         class: Olenaza\BlogBundle\Extension\Twig\BlogTwigExtension
         tags:
-               - { name: twig.extension }
+             - { name: twig.extension }
 
     admin.post:
         class: Olenaza\BlogBundle\Admin\PostAdmin
@@ -25,14 +25,14 @@ services:
               show_mosaic_button: false
 
     admin.category:
-            class: Olenaza\BlogBundle\Admin\CategoryAdmin
-            arguments: [~, Olenaza\BlogBundle\Entity\Category, ~]
-            tags:
-                - name: sonata.admin
-                  manager_type: orm
-                  group: "Content"
-                  label: "Category"
-                  show_mosaic_button: false
+        class: Olenaza\BlogBundle\Admin\CategoryAdmin
+        arguments: [~, Olenaza\BlogBundle\Entity\Category, ~]
+        tags:
+            - name: sonata.admin
+              manager_type: orm
+              group: "Content"
+              label: "Category"
+              show_mosaic_button: false
 
     admin.settings:
         class: Olenaza\BlogBundle\Admin\SettingAdmin
@@ -45,20 +45,24 @@ services:
               show_mosaic_button: false
 
     blog.menu_builder:
-            class: Olenaza\BlogBundle\Menu\MenuBuilder
-            arguments: ["@knp_menu.factory", "@=service('doctrine').getRepository('OlenazaBlogBundle:Category')"]
-            tags:
-                - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
-                - { name: knp_menu.menu_builder, method: createBottomMenu, alias: bottom }
+        class: Olenaza\BlogBundle\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory", "@=service('doctrine').getRepository('OlenazaBlogBundle:Category')"]
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+            - { name: knp_menu.menu_builder, method: createBottomMenu, alias: bottom }
 
     blog.breadcrumbs_builder:
-                class: Olenaza\BlogBundle\Menu\BreadcrumbsBuilder
-                arguments: ["@white_october_breadcrumbs", "@=service('doctrine').getRepository('OlenazaBlogBundle:Category')"]
+        class: Olenaza\BlogBundle\Menu\BreadcrumbsBuilder
+        arguments: ["@white_october_breadcrumbs", "@=service('doctrine').getRepository('OlenazaBlogBundle:Category')"]
 
     blog.comment_voter:
-           class: Olenaza\BlogBundle\Security\CommentVoter
-           arguments: ['@security.access.decision_manager']
-           tags:
-               - { name: security.voter }
-           # small performance boost
-           public: false
+        class: Olenaza\BlogBundle\Security\CommentVoter
+        arguments: ['@security.access.decision_manager']
+        tags:
+            - { name: security.voter }
+        # small performance boost
+        public: false
+
+    blog.user_provider:
+        class:     Olenaza\BlogBundle\Security\Core\User\MyFOSUBUserProvider
+        arguments: ['@fos_user.user_manager', { facebook: facebook_id }]

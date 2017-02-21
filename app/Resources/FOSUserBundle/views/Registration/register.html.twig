@@ -5,4 +5,5 @@
     <h2>Форма для реєстрації</h2>
     <hr>
     {% include "@FOSUser/Registration/register_content.html.twig" %}
+    <a href="{{ url("hwi_oauth_service_redirect", {service: "facebook"}) }}">Login with Facebook</a>
 {% endblock fos_user_content %}

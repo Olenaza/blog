@@ -20,8 +20,21 @@ security:
             logout:       true
             anonymous:    true
 
+            oauth:
+                resource_owners:
+                    facebook:      /login/check-facebook
+                login_path:        /login
+                use_forward:       false
+                failure_path:      /login
+                oauth_user_provider:
+                    service: blog.user_provider
+
+            # Turn on anonymous for testings need.
+            anonymous: ~
+
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connect, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, role: ROLE_ADMIN }

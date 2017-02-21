@@ -15,12 +15,13 @@ class LoadCommentData extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         for ($i = 0; $i <= 20; ++$i) {
-            $comment = new Comment($this->getReference("Post$i"));
+            $comment = new Comment($this->getReference("Post$i"), $this->getReference("User$i"));
             $comment->setText('Text');
 
             $manager->persist($comment);
-            $manager->flush();
         }
+
+        $manager->flush();
     }
 
     /**
@@ -28,6 +29,6 @@ class LoadCommentData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 4;
+        return 5;
     }
 }

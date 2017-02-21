@@ -5,22 +5,24 @@ namespace Olenaza\BlogBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Olenaza\BlogBundle\Entity\Tag;
+use Olenaza\BlogBundle\Entity\User;
 
-class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
+class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
-        for ($i = 0; $i <= 4; ++$i) {
-            $tag = new Tag();
-            $tag->setName("Tag$i");
+        for ($i = 0; $i <= 20; ++$i) {
+            $user = new User();
+            $user->setUsername("Name$i");
+            $user->setEmail("Email[$i]@gmail.com");
+            $user->setPassword("Password$i");
 
-            $this->addReference("Tag$i", $tag);
+            $this->addReference("User$i", $user);
 
-            $manager->persist($tag);
+            $manager->persist($user);
         }
 
         $manager->flush();
@@ -31,6 +33,6 @@ class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 1;
+        return 4;
     }
 }
