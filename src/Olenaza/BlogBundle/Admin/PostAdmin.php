@@ -65,12 +65,6 @@ class PostAdmin extends AbstractAdmin
                 ])
             ->end()
 
-            ->with('Publish Options', ['class' => 'col-md-6'])
-                ->add('published', null, [
-                    'label' => 'Publish this post?',
-                    'required' => false,
-                    ])
-            ->end()
         ;
 
         $subject = $this->getSubject();
@@ -78,6 +72,11 @@ class PostAdmin extends AbstractAdmin
         if (!$subject->isPublished()) {
             $formMapper
                 ->with('Publish Options', ['class' => 'col-md-6'])
+                    ->add('forPublication', null, [
+                        'label' => 'Publish this post?',
+                        'required' => false,
+                    ])
+
                     ->add('publishedOn', 'date', [
                         'label' => 'Publish On',
                         'required' => false,
@@ -176,7 +175,7 @@ class PostAdmin extends AbstractAdmin
      */
     public function prePersist($object)
     {
-        if (!$object->isPublished()) {
+        if (!($object->isForPublication() or $object->isPublished())) {
             $object->setPublishedOn(null);
         }
     }
@@ -188,7 +187,7 @@ class PostAdmin extends AbstractAdmin
      */
     public function preUpdate($object)
     {
-        if (!$object->isPublished()) {
+        if (!($object->isForPublication() or $object->isPublished())) {
             $object->setPublishedOn(null);
         }
     }

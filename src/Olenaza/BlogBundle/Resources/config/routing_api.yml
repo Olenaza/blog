@@ -1,0 +1,11 @@
+posts:
+    type:     rest
+    host:     cheblog.ua
+    resource: Olenaza\BlogBundle\Controller\ApiPostController
+    name_prefix:  api_
+
+#comments:
+#    type:     rest
+#    host:     cheblog.ua
+#    parent:   posts
+#    resource: Olenaza\BlogBundle\Rest\Controller\CommentController

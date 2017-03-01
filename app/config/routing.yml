@@ -39,3 +39,12 @@ fos_user_register:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+
+api_resources:
+    type:     rest
+    prefix: /api
+    resource: "@OlenazaBlogBundle/Resources/config/routing_api.yml"

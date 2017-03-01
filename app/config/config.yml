@@ -35,12 +35,14 @@ framework:
         log: true
     translator:
         fallback: %locale%
+    serializer: true
 
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
             - 'bootstrap_3_layout.html.twig'
+    exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
 
 doctrine:
     dbal:
@@ -179,3 +181,45 @@ hwi_oauth:
             options:
                 display: popup #dialog is optimized for popup window
                 csrf: true
+
+sensio_framework_extra:
+    router:      { annotations: false }
+    request:     { converters: true, auto_convert: true }
+    view:        { annotations: true }
+    cache:       { annotations: false }
+    security:    { annotations: false }
+    psr_message: { enabled: false } # Defaults to true if the PSR-7 bridge is installed
+
+fos_rest:
+    routing_loader:
+        default_format: json
+        include_format: false
+    param_fetcher_listener: force
+    format_listener:
+        enabled: true
+        rules:
+            - { path: '^/api', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: false }
+            - { path: '^/', stop: true }
+    versioning: false
+    view:
+        view_response_listener: true
+        formats:
+            json: true
+            xml: true
+            rss: false
+        templating_formats:
+            html: true
+        force_redirects:
+            html: true
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: twig
+    serializer:
+        groups: [list, details]
+    exception:
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+        messages:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
+
+nelmio_api_doc: ~

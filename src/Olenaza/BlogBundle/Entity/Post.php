@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormInterface;
+use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Table(name="post")
@@ -30,6 +32,7 @@ class Post
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"list", "details"})
      */
     private $id;
 
@@ -44,6 +47,7 @@ class Post
      *      minMessage="The post title must be at least 2 characters long",
      *      maxMessage="The post title cannot be longer than 255 characters"
      * )
+     * @Groups({"list", "details"})
      */
     private $title;
 
@@ -56,6 +60,7 @@ class Post
      *      minMessage="The post subtitle must be at least 2 characters long",
      *      maxMessage="The post subtitle cannot be longer than 255 characters"
      * )
+     * @Groups({"details"})
      */
     private $subtitle;
 
@@ -68,6 +73,7 @@ class Post
      *      min=2,
      *      minMessage="The post text must be at least 2 characters long"
      * )
+     * @Groups({"details"})
      */
     private $text;
 
@@ -82,6 +88,7 @@ class Post
      *      minMessage="The post beginning must be at least 2 characters long",
      *      maxMessage="The post beginning cannot be longer than 255 characters"
      * )
+     * @Groups({"list"})
      */
     private $beginning;
 
@@ -92,6 +99,7 @@ class Post
      * @SymfonyConstraint\Url(
      *     checkDNS = true
      * )
+     * @Groups({"list"})
      */
     private $coverImage;
 
@@ -101,7 +109,15 @@ class Post
      * @SymfonyConstraint\NotNull()
      * @SymfonyConstraint\Type("bool")
      */
-    private $published;
+    private $forPublication;
+
+    /**
+     * @ORM\Column(type="boolean")
+     *
+     * @SymfonyConstraint\NotNull()
+     * @SymfonyConstraint\Type("bool")
+     */
+    private $published = false;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -112,12 +128,14 @@ class Post
      *      minMessage="The post publication date can't be earlier than today",
      *      maxMessage="The post publication date can't be later than 365 days from today"
      * )
+     * @Groups({"list", "details"})
      */
     private $publishedOn;
 
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Groups({"list", "details"})
      */
     private $slug;
 
@@ -134,6 +152,8 @@ class Post
      *     minMessage="You must specify at least one tag",
      *     groups={"Published"}
      * )
+     * @Groups({"details"})
+     * @MaxDepth(2)
      */
     private $tags;
 
@@ -149,6 +169,7 @@ class Post
      *     minMessage="You must specify at least one category",
      *     groups={"Published"}
      * )
+     * @MaxDepth(2)
      */
     private $categories;
 
@@ -159,6 +180,8 @@ class Post
      *      orphanRemoval=true
      * )
      * @ORM\OrderBy({"publishedAt" = "DESC"})
+     * @Groups({"details"})
+     * @MaxDepth(2)
      */
     private $comments;
 
@@ -168,6 +191,8 @@ class Post
      *      mappedBy="post",
      *      orphanRemoval=true
      * )
+     * @Groups({"details"})
+     * @MaxDepth(2)
      */
     private $likes;
 
@@ -305,6 +330,26 @@ class Post
     public function isPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * @param bool $forPublication
+     *
+     * @return Post
+     */
+    public function setForPublication($forPublication)
+    {
+        $this->forPublication = $forPublication;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isForPublication()
+    {
+        return $this->forPublication;
     }
 
     /**

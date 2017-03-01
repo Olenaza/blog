@@ -28,10 +28,6 @@ post_comment_edit:
     requirements:
         commentEditId: '\d+'
 
-post_like:
-    path:     /{slug}/like/{username}
-    defaults: { _controller: OlenazaBlogBundle:Like:create}
-
 post_show:
     path:     /{slug}
     defaults: { _controller: OlenazaBlogBundle:Post:show}

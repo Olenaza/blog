@@ -29,16 +29,26 @@ class User extends BaseUser
     /**
      * @ORM\OneToMany(
      *      targetEntity="Like",
-     *      mappedBy="post",
+     *      mappedBy="user",
      *      orphanRemoval=true
      * )
      */
     private $likes;
 
+    /**
+     * @ORM\OneToMany(
+     *      targetEntity="Comment",
+     *      mappedBy="user",
+     *      orphanRemoval=true
+     * )
+     */
+    private $comments;
+
     public function __construct()
     {
         parent::__construct();
         $this->likes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -100,7 +110,7 @@ class User extends BaseUser
     /**
      * @param Like $like
      *
-     * @return Post
+     * @return User
      */
     public function addLike(Like $like)
     {
@@ -115,5 +125,33 @@ class User extends BaseUser
     public function removeLike(Like $like)
     {
         $this->likes->removeElement($like);
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param Comment $comment
+     *
+     * @return User
+     */
+    public function addComment(Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @param Comment $comment
+     */
+    public function removeComment(Comment $comment)
+    {
+        $this->comments->removeElement($comment);
     }
 }
