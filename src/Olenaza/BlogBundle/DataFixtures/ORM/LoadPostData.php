@@ -22,6 +22,7 @@ class LoadPostData extends AbstractFixture implements OrderedFixtureInterface
             $post->setText("Post$i Text");
             $post->setCoverImage("https://www.$i.net");
             $post->setPublished(true);
+            $post->setForPublication(true);
             $post->setPublishedOn(new \DateTime());
 
             $number = $i % 5;

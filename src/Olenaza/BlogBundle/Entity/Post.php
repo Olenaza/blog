@@ -10,6 +10,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormInterface;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\MaxDepth;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * @ORM\Table(name="post")
@@ -25,6 +27,8 @@ use JMS\Serializer\Annotation\MaxDepth;
  *     message="This combination of title and subtitle already exists in the other post"
  * )
  * @SymfonyConstraint\GroupSequence({"Post", "Strict"})
+ *
+ * @ExclusionPolicy("none")
  */
 class Post
 {
@@ -32,7 +36,7 @@ class Post
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"list", "details"})
+     * @Groups({"list"})
      */
     private $id;
 
@@ -108,6 +112,8 @@ class Post
      *
      * @SymfonyConstraint\NotNull()
      * @SymfonyConstraint\Type("bool")
+     *
+     * @Exclude()
      */
     private $forPublication;
 
@@ -116,6 +122,8 @@ class Post
      *
      * @SymfonyConstraint\NotNull()
      * @SymfonyConstraint\Type("bool")
+     *
+     * @Exclude()
      */
     private $published = false;
 
@@ -152,7 +160,6 @@ class Post
      *     minMessage="You must specify at least one tag",
      *     groups={"Published"}
      * )
-     * @Groups({"details"})
      * @MaxDepth(2)
      */
     private $tags;
@@ -180,8 +187,8 @@ class Post
      *      orphanRemoval=true
      * )
      * @ORM\OrderBy({"publishedAt" = "DESC"})
-     * @Groups({"details"})
-     * @MaxDepth(2)
+     *
+     * @MaxDepth(3)
      */
     private $comments;
 
@@ -191,8 +198,7 @@ class Post
      *      mappedBy="post",
      *      orphanRemoval=true
      * )
-     * @Groups({"details"})
-     * @MaxDepth(2)
+     * @MaxDepth(3)
      */
     private $likes;
 

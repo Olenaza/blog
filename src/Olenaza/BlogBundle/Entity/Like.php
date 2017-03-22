@@ -5,6 +5,8 @@ namespace Olenaza\BlogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as SymfonyConstraint;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * @ORM\Table(name="likes_count")
@@ -14,6 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     fields={"user", "post"},
  *     message="Ви вже вподобали цей запис"
  * )
+ * @ExclusionPolicy("none")
  */
 class Like
 {
@@ -40,6 +43,7 @@ class Like
      *      targetEntity="Post",
      *      inversedBy="likes"
      * )
+     * @Exclude()
      */
     private $post;
 

@@ -15,7 +15,7 @@
                     ["Опублікований: ", comment.publishedAt|date("d/m/Y")]|join :
                     ["Відредагований: ", comment.updatedAt|date("d/m/Y")]|join}}
 
-                    {% if app.user.id == comment.user.id %}
+                    {% if app.user and app.user.id == comment.user.id %}
                         <a href="{{ path('post_comment_edit', {'slug': post.slug, 'commentToEditId': comment.id}) }}">
                             Edit
                         </a>

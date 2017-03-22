@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: uk
+    jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
 framework:
     #esi:             ~
@@ -156,9 +157,12 @@ fos_user:
     firewall_name: main
     user_class: Olenaza\BlogBundle\Entity\User
     use_username_form_type: false
+    from_email:
+        address: olena.zamkova@gmail.com
+        sender_name: administrator
 
 olenaza_blog:
-    posts_per_page: 7
+    posts_per_page: 5
     recent_posts_number: 3
 
 hwi_oauth:
@@ -191,6 +195,8 @@ sensio_framework_extra:
     psr_message: { enabled: false } # Defaults to true if the PSR-7 bridge is installed
 
 fos_rest:
+    serializer:
+        serialize_null: true
     routing_loader:
         default_format: json
         include_format: false
@@ -198,10 +204,11 @@ fos_rest:
     format_listener:
         enabled: true
         rules:
-            - { path: '^/api', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: false }
+            - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: false }
             - { path: '^/', stop: true }
     versioning: false
     view:
+        serialize_null: true
         view_response_listener: true
         formats:
             json: true
@@ -213,8 +220,7 @@ fos_rest:
             html: true
         failed_validation: HTTP_BAD_REQUEST
         default_engine: twig
-    serializer:
-        groups: [list, details]
+
     exception:
         codes:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404

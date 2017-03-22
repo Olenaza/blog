@@ -5,10 +5,15 @@ namespace Olenaza\BlogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as SymfonyConstraint;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Table(name="comment")
  * @ORM\Entity(repositoryClass="Olenaza\BlogBundle\Repository\CommentRepository")
+ *
+ * @ExclusionPolicy("none")
  */
 class Comment
 {
@@ -44,6 +49,7 @@ class Comment
      *      targetEntity="Post",
      *      inversedBy="comments"
      * )
+     * @Exclude()
      */
     private $post;
 
@@ -52,6 +58,7 @@ class Comment
      *      targetEntity="User",
      *      inversedBy="comments"
      * )
+     * @MaxDepth(3)
      */
     private $user;
 

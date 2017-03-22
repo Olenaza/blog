@@ -6,12 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as SymfonyConstraint;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * @ORM\Table(name="tag")
  * @ORM\Entity(repositoryClass="Olenaza\BlogBundle\Repository\TagRepository")
  *
  * @UniqueEntity("name")
+ *
+ * @ExclusionPolicy("none")
  */
 class Tag
 {
@@ -38,6 +42,8 @@ class Tag
 
     /**
      * @ORM\ManyToMany(targetEntity="Post", mappedBy="tags")
+     *
+     * @Exclude()
      */
     private $posts;
 

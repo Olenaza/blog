@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as SymfonyConstraint;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * @Gedmo\Tree(type="nested")
@@ -15,6 +17,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="Olenaza\BlogBundle\Repository\CategoryRepository")
  *
  * @UniqueEntity("title")
+ *
+ * @ExclusionPolicy("all")
  */
 class Category
 {
@@ -36,12 +40,15 @@ class Category
      *      minMessage="The category title must be at least 2 characters long",
      *      maxMessage="The category title cannot be longer than 64 characters"
      * )
+     * @Expose()
      */
     private $title;
 
     /**
      * @Gedmo\Slug(fields={"title"})
      * @ORM\Column(type="string", length=128, unique=true)
+     *
+     * @Expose()
      */
     private $slug;
 
