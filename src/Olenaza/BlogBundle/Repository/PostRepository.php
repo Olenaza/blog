@@ -15,10 +15,8 @@ class PostRepository extends EntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.published = :published')
-            ->andWhere('p.publishedOn <= :today')
             ->orderBy('p.publishedOn', 'DESC')
             ->setParameter('published', true)
-            ->setParameter('today', new \DateTime('today'))
             ->setMaxResults($limit)
             ->getQuery();
     }
@@ -32,12 +30,10 @@ class PostRepository extends EntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.published = :published')
-            ->andWhere('p.publishedOn <= :today')
             ->innerJoin('p.categories', 'c', 'WITH',  'c.slug = :slug')
             ->setParameters([
                 'published' => true,
                 'slug' => $slug,
-                'today' => new \DateTime('today'),
             ])
             ->getQuery();
     }
@@ -51,14 +47,25 @@ class PostRepository extends EntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.published = :published')
-            ->andWhere('p.publishedOn <= :today')
             ->innerJoin('p.tags', 't', 'WITH',  't.name = :name')
             ->setParameters([
                 'published' => true,
                 'name' => $name,
-                'today' => new \DateTime('today'),
             ])
             ->getQuery();
+    }
+
+    public function findForPublication()
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.published = :published')
+            ->andWhere('p.forPublication = :forPublication')
+            ->andWhere('p.publishedOn <= :today')
+            ->setParameter('published', false)
+            ->setParameter('forPublication', true)
+            ->setParameter('today', new \DateTime('today'))
+            ->getQuery()
+            ->getResult();
     }
 
     /**

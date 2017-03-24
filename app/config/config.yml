@@ -229,3 +229,19 @@ fos_rest:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
 
 nelmio_api_doc: ~
+
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        cheblog:
+            types:
+                post:
+                    properties:
+                        title: ~
+                        text: ~
+                    persistence:
+                        driver: orm
+                        model: Olenaza\BlogBundle\Entity\Post
+                        provider: ~
+                        finder: ~

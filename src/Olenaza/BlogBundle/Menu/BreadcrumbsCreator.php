@@ -5,7 +5,7 @@ namespace Olenaza\BlogBundle\Menu;
 use Olenaza\BlogBundle\Repository\CategoryRepository;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
-class BreadcrumbsBuilder
+class BreadcrumbsCreator
 {
     private $categoryRepository;
 
@@ -23,7 +23,7 @@ class BreadcrumbsBuilder
      *
      * @return Breadcrumbs
      */
-    public function createBreadcrumbs($categorySlug = null, $tagName = null)
+    public function createBreadcrumbsFromHistory($categorySlug = null, $tagName = null)
     {
         if (!empty($categorySlug)) {
             $category = $this->categoryRepository

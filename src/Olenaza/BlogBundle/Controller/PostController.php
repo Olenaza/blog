@@ -21,7 +21,7 @@ class PostController extends Controller
      */
     public function listAction($page)
     {
-        $this->get('blog.breadcrumbs_builder')->createBreadcrumbs();
+        $this->get('blog.breadcrumbs_creator')->createBreadcrumbsFromHistory();
 
         $query = $this->getDoctrine()
             ->getRepository('OlenazaBlogBundle:Post')
@@ -44,7 +44,7 @@ class PostController extends Controller
      */
     public function listByCategoryAction(Category $category, $page)
     {
-        $this->get('blog.breadcrumbs_builder')->createBreadcrumbs($category->getSlug());
+        $this->get('blog.breadcrumbs_creator')->createBreadcrumbsFromHistory($category->getSlug());
 
         $query = $this->getDoctrine()
             ->getRepository('OlenazaBlogBundle:Post')
@@ -68,7 +68,7 @@ class PostController extends Controller
      */
     public function listByTagAction($name, $page)
     {
-        $this->get('blog.breadcrumbs_builder')->createBreadcrumbs(null, $name);
+        $this->get('blog.breadcrumbs_creator')->createBreadcrumbsFromHistory(null, $name);
 
         $query = $this->getDoctrine()
             ->getRepository('OlenazaBlogBundle:Post')
@@ -93,8 +93,10 @@ class PostController extends Controller
      */
     public function showAction(Post $post, Request $request, $commentToEditId = null)
     {
-        $breadcrumbs = $this->get('blog.breadcrumbs_builder')
-            ->createBreadcrumbs($request->query->get('categorySlug'), $request->query->get('tagName'));
+        $breadcrumbs = $this->get('blog.breadcrumbs_creator')
+            ->createBreadcrumbsFromHistory(
+                $request->query->get('categorySlug'),
+                $request->query->get('tagName'));
 
         $breadcrumbs->addItem($post->getTitle());
 
@@ -159,7 +161,7 @@ class PostController extends Controller
      */
     public function searchAction($page, Request $request)
     {
-        $breadcrumbs = $this->get('blog.breadcrumbs_builder')->createBreadcrumbs();
+        $breadcrumbs = $this->get('blog.breadcrumbs_creator')->createBreadcrumbsFromHistory();
 
         $breadcrumbs->addItem('Результати пошуку');
 
