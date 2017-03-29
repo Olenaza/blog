@@ -8,6 +8,7 @@ use Olenaza\BlogBundle\Entity\Like;
 use Olenaza\BlogBundle\Entity\Post;
 use Olenaza\BlogBundle\Form\Type\CommentType;
 use Olenaza\BlogBundle\Form\Type\LikeType;
+use Olenaza\BlogBundle\Form\Type\SearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -154,27 +155,61 @@ class PostController extends Controller
     }
 
     /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function searchAction(Request $request)
+    {
+        $formData = [
+            'searchText' => $request->query->get('searchText'),
+        ];
+
+        $searchForm = $this->createForm(SearchType::class, $formData, [
+            'action' => $this->generateUrl('posts_search_results'),
+            'method' => 'POST',
+        ]);
+
+        return $this->render('OlenazaBlogBundle:search:_partials_search_form.html.twig', [
+            'searchForm' => $searchForm->createView(),
+        ]);
+    }
+
+    /**
      * @param $page
      * @param Request $request
      *
      * @return Response
      */
-    public function searchAction($page, Request $request)
+    public function showSearchResultsAction($page, Request $request)
     {
-        $breadcrumbs = $this->get('blog.breadcrumbs_creator')->createBreadcrumbsFromHistory();
+        $searchForm = $this->createForm(SearchType::class);
 
-        $breadcrumbs->addItem('Результати пошуку');
+        $searchForm->handleRequest($request);
 
-        $query = $this->getDoctrine()
-            ->getRepository('OlenazaBlogBundle:Post')
-            ->findByFragment($request->query->get('fragment'));
+        if (($searchForm->isSubmitted() && $searchForm->isValid()) or ($request->getMethod() === 'GET')) {
+            $breadcrumbs = $this->get('blog.breadcrumbs_creator')->createBreadcrumbsFromHistory();
+            $breadcrumbs->addItem('Результати пошуку');
 
-        $paginator = $this->get('knp_paginator');
-        $limit = $this->container->getParameter('posts_per_page');
-        $pagination = $paginator->paginate($query, $page, $limit);
+            $finder = $this->container->get('fos_elastica.finder.cheblog.post');
 
-        return $this->render('OlenazaBlogBundle:post:index.html.twig', [
-            'pagination' => $pagination,
+            $paginator = $this->get('knp_paginator');
+            $limit = $this->container->getParameter('posts_per_page');
+
+            $searchText = $searchForm->get('searchText')->getData();
+
+            $results = $finder->createPaginatorAdapter($searchText);
+
+            $pagination = $paginator->paginate($results, $page, $limit);
+
+            return $this->render('OlenazaBlogBundle:post:index.html.twig', [
+                'pagination' => $pagination,
+                'searchText' => $searchText,
+            ]);
+        }
+
+        return $this->render('OlenazaBlogBundle:search:search_form_errors.html.twig', [
+            'searchForm' => $searchForm->createView(),
         ]);
     }
 }

@@ -235,13 +235,33 @@ fos_elastica:
         default: { host: localhost, port: 9200 }
     indexes:
         cheblog:
+            settings:
+                analysis:
+                    analyzer:
+                        cheblog_analyzer:
+                            type: custom
+                            tokenizer: standard
+                            char_filter: html_strip
+                            filter: [
+                                lowercase,
+                                trim,
+                                my_stop:
+                                    type: stop
+                                    stopwords_path: /home/olenaza/projects/mche_blog/src/Olenaza/BlogBundle/Resources/org/elasticsearch/analisys/stopwords.txt
+                                    remove_trailing: false
+                                ]
             types:
                 post:
                     properties:
-                        title: ~
-                        text: ~
+                        title: { analyzer: cheblog_analyzer }
+                        text: { analyzer: cheblog_analyzer }
                     persistence:
                         driver: orm
                         model: Olenaza\BlogBundle\Entity\Post
                         provider: ~
                         finder: ~
+                        listener:
+                            logger: true
+                        elastica_to_model_transformer:
+                            ignore_missing: true
+                    indexable_callback: 'isPublished'

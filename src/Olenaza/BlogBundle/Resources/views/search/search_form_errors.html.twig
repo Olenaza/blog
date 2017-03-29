@@ -1,0 +1,13 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Помилка{% endblock %}
+
+{% block content %}
+
+    <h2>Помилка при заповненні форми:</h2>
+    <h4>
+        {{ form_start(searchForm) }}
+        {{ form_errors(searchForm) }}
+        {{ form_end(searchForm) }}
+    </h4>
+{% endblock %}

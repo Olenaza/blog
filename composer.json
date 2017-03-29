@@ -40,7 +40,7 @@
         "nelmio/api-doc-bundle": "^2.13",
         "symfony/console": "^3.2",
         "guzzlehttp/guzzle": "~5.0",
-        "friendsofsymfony/elastica-bundle": "^3.2"
+        "friendsofsymfony/elastica-bundle": "^5.0@dev"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

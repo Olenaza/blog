@@ -44,10 +44,7 @@ class ApiPostController extends Controller
         $limit = $this->container->getParameter('posts_per_page');
         $pagination = $paginator->paginate($query, $page, $limit);
 
-        $posts = [];
-        foreach ($pagination as $result) {
-            $posts[] = $result;
-        }
+        $posts = iterator_to_array($pagination);
 
         $route = 'api_get_posts';
 
