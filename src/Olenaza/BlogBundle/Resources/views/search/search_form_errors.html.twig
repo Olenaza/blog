@@ -4,10 +4,11 @@
 
 {% block content %}
 
-    <h2>Помилка при заповненні форми:</h2>
+    <h2>Помилка при заповненні форми для пошуку:</h2>
     <h4>
         {{ form_start(searchForm) }}
         {{ form_errors(searchForm) }}
-        {{ form_end(searchForm) }}
+        {{ form_errors(searchForm.searchText) }}
+        {{ form_end(searchForm, {'render_rest': false}) }}
     </h4>
 {% endblock %}

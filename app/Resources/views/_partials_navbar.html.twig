@@ -23,9 +23,11 @@
             <div class="col-sm-3 col-md-3">
                 <div class="navbar-form navbar-left">
                     <div class="input-group">
-                        {{ searchText is defined ?
-                            render(controller('OlenazaBlogBundle:Post:search'), {'searchText': searchText}) :
-                            render(controller('OlenazaBlogBundle:Post:search')) }}
+                        {% if text is defined %}
+                            {{ render(controller('OlenazaBlogBundle:Post:search', {'text': text})) }}
+                        {% else %}
+                            {{ render(controller('OlenazaBlogBundle:Post:search')) }}
+                        {% endif %}
                     </div>
                 </div>
             </div>

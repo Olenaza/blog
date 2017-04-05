@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 class SearchType extends AbstractType
 {
@@ -23,6 +24,7 @@ class SearchType extends AbstractType
             ],
             'constraints' => [
                 new NotBlank(),
+                new Type('string'),
             ],
         ]);
 

@@ -155,15 +155,13 @@ class PostController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param string $text
      *
      * @return Response
      */
-    public function searchAction(Request $request)
+    public function searchAction($text = '')
     {
-        $formData = [
-            'searchText' => $request->query->get('searchText'),
-        ];
+        $formData = ['searchText' => $text];
 
         $searchForm = $this->createForm(SearchType::class, $formData, [
             'action' => $this->generateUrl('posts_search_results'),
@@ -202,10 +200,16 @@ class PostController extends Controller
 
             $pagination = $paginator->paginate($results, $page, $limit);
 
-            return $this->render('OlenazaBlogBundle:post:index.html.twig', [
-                'pagination' => $pagination,
-                'searchText' => $searchText,
-            ]);
+            if (!empty($searchText)) {
+                return $this->render('OlenazaBlogBundle:post:index.html.twig', [
+                    'pagination' => $pagination,
+                    'text' => $searchText,
+                ]);
+            } else {
+                return $this->render('OlenazaBlogBundle:post:index.html.twig', [
+                    'pagination' => $pagination,
+                ]);
+            }
         }
 
         return $this->render('OlenazaBlogBundle:search:search_form_errors.html.twig', [
