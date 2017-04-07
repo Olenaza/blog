@@ -35,10 +35,3 @@ post_comment_edit:
 post_show:
     path:     /{slug}
     defaults: { _controller: OlenazaBlogBundle:Post:show}
-
-remove_trailing_slash:
-    path: /{url}
-    defaults: { _controller: OlenazaBlogBundle:Redirecting:removeTrailingSlash }
-    requirements:
-        url: .*/$
-    methods: [GET]

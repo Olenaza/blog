@@ -5,57 +5,51 @@ namespace Olenaza\BlogBundle\Security\Core\User;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseFOSUBProvider;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Olenaza\BlogBundle\Entity\User;
 
 class MyFOSUBUserProvider extends BaseFOSUBProvider
 {
     /**
      * {@inheritdoc}
      */
-    public function connect(UserInterface $user, UserResponseInterface $response)
-    {
-        // get property from provider configuration by provider name
-        // , it will return `facebook_id` in that case (see service definition below)
-        $property = $this->getProperty($response);
-        $username = $response->getUsername();
-
-        //we "disconnect" previously connected users
-        $existingUser = $this->userManager->findUserBy(array($property => $username));
-        if (null !== $existingUser) {
-            // set current user id and token to null for disconnect
-            $this->userManager->updateUser($existingUser);
-        }
-        // we connect current user, set current user id and token
-        $this->userManager->updateUser($user);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
-        $userEmail = $response->getEmail();
-        $user = $this->userManager->findUserByEmail($userEmail);
+        $service = $response->getResourceOwner()->getName();
 
-        // if null just create new user and set it properties
+        $socialID = $response->getUsername(); //a unique user identifier in an authentication configuration
+
+        $user = $this->userManager->findUserBy([$this->getProperty($response) => $socialID]);
+
+        //check if the user already has the corresponding social account
         if (null === $user) {
-            $username = $response->getRealName();
-            $user = new User();
-            $user->setUsername($username);
-            $user->setEmail($userEmail);
+            //check if the user has a normal account
+            $email = $response->getEmail();
+            $user = $this->userManager->findUserByEmail($email);
 
-            $facebookId = $this->getProperty($response);
-            $user->setFacebookId($facebookId);
+            if (null === $user || !$user instanceof UserInterface) {
+                //if the user does not have a normal account, set it up:
+                $user = new User();
+                $user->setUsername($response->getRealName());
+                $user->setEmail($email);
+                $user->setPlainPassword(md5(uniqid()));
+                $user->setEnabled(true);
+            }
+            //then set its corresponding social id
+            switch ($service) {
+                case 'google':
+                    $user->setGoogleID($socialID);
+                    break;
+                case 'facebook':
+                    $user->setFacebookID($socialID);
+                    break;
+            }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
-            return $user;
+            $this->userManager->updateUser($user);
+        } else {
+            // else update access token of existing user
+            $setter = 'set'.ucfirst($service).'AccessToken';
+            $user->$setter($response->getAccessToken()); //update access token
         }
-        // else update access token of existing user
-        $serviceName = $response->getResourceOwner()->getName();
-        $setter = 'set'.ucfirst($serviceName).'AccessToken';
-        $user->$setter($response->getAccessToken()); //update access token
 
         return $user;
     }

@@ -168,8 +168,7 @@ olenaza_blog:
 hwi_oauth:
     # list of names of the firewalls in which this bundle is active, this setting MUST be set
     firewall_names: [main]
-    target_path_parameter: _destination
-    use_referer: true
+    target_path_parameter: /
     connect:
         account_connector: blog.user_provider
     fosub:

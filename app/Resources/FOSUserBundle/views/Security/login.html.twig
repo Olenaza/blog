@@ -5,4 +5,7 @@
     <h2>Форма для входу</h2>
     <hr>
     {{ include('@FOSUser/Security/login_content.html.twig') }}
+    <br>
+    <a href="{{ path("hwi_oauth_service_redirect", {service: "facebook"}) }}">Login with Facebook</a>
+
 {% endblock fos_user_content %}

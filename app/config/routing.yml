@@ -6,8 +6,12 @@ hwi_oauth_connect:
     resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
     prefix:   /connect
 
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix:   /login_services
+
 facebook_login:
-    path: /login/check_facebook
+    path: /login_services/check-facebook
 
 olenaza_blog_pages:
     resource: "@OlenazaBlogBundle/Resources/config/routing.yml"
@@ -48,3 +52,10 @@ api_resources:
     type:     rest
     prefix: /api
     resource: "@OlenazaBlogBundle/Resources/config/routing_api.yml"
+
+remove_trailing_slash:
+    path: /{url}
+    defaults: { _controller: OlenazaBlogBundle:Redirecting:removeTrailingSlash }
+    requirements:
+        url: .*/$
+    methods: [GET]
