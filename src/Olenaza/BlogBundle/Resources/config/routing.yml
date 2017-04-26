@@ -1,10 +1,18 @@
 welcome:
     path:     /
     defaults: { _controller: OlenazaBlogBundle:Welcome:index }
+    options:
+        sitemap:
+            priority: 1
+            changefreq: daily
 
 about:
     path:     /about
     defaults: { _controller: OlenazaBlogBundle:About:index }
+    options:
+        sitemap:
+            priority: 0.5
+            changefreq: yearly
 
 comment_update:
     path:     /comments/{id}/update

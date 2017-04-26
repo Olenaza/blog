@@ -8,6 +8,7 @@ imports:
 parameters:
     locale: uk
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
+    blog_admin.from_email_address: admin.cheblog@gmail.com
 
 framework:
     #esi:             ~
@@ -42,7 +43,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
-            - 'bootstrap_3_layout.html.twig'
+        - 'bootstrap_3_layout.html.twig'
     exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
 
 doctrine:
@@ -55,8 +56,8 @@ doctrine:
         password: "%database_password%"
         charset: utf8mb4
         default_table_options:
-                    charset: utf8mb4
-                    collate: utf8mb4_unicode_ci
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
@@ -92,14 +93,12 @@ sonata_formatter:
                 - sonata.formatter.twig.gist
         #        - sonata.media.formatter.twig #keep this commented unless you are using media bundle.
 
-
         text:
             service: sonata.formatter.text.text
             extensions:
                 - sonata.formatter.twig.control_flow
                 - sonata.formatter.twig.gist
         #        - sonata.media.formatter.twig
-
 
         rawhtml:
             service: sonata.formatter.text.raw
@@ -108,14 +107,12 @@ sonata_formatter:
                 - sonata.formatter.twig.gist
         #        - sonata.media.formatter.twig
 
-
         richhtml:
             service: sonata.formatter.text.raw
             extensions:
                 - sonata.formatter.twig.control_flow
                 - sonata.formatter.twig.gist
         #        - sonata.media.formatter.twig
-
 
         twig:
             service: sonata.formatter.text.twigengine
@@ -158,7 +155,7 @@ fos_user:
     user_class: Olenaza\BlogBundle\Entity\User
     use_username_form_type: false
     from_email:
-        address: olena.zamkova@gmail.com
+        address: "%blog_admin.from_email_address%"
         sender_name: administrator
 
 olenaza_blog:
@@ -178,8 +175,8 @@ hwi_oauth:
     resource_owners:
         facebook:
             type: facebook
-            client_id: 1711978655760667
-            client_secret: 432bf783f1287eccf16add0e5c537574
+            client_id: "%facebook_client_id%"
+            client_secret: "%facebook_client_secret%"
             scope: "email, public_profile"
             options:
                 display: popup #dialog is optimized for popup window
@@ -264,3 +261,6 @@ fos_elastica:
                         elastica_to_model_transformer:
                             ignore_missing: true
                     indexable_callback: 'isPublished'
+
+presta_sitemap:
+   route_annotation_listener: false

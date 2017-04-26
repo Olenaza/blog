@@ -1,0 +1,15 @@
+<p>Вітаємо!</p>
+
+<p>Ви зареєструвалися на <a href="{{ url('welcome') }}">cheblog.ua</a>.</p>
+<p>Тепер Ви можете вподобати та коментувати будь-які записи блогу.<p/>
+
+<p>Ваше ім'я користувача: {{ username }}</p>
+<p>Пароль: {{ password }}</p>
+
+<p>Змінити пароль можна за цим посиланням: <a href="{{ url('fos_user_change_password') }}">Змінити пароль</a>.</p>
+
+<p>Дякуємо за реєстрацію!</p>
+
+{# Makes an absolute URL to the /images/logo.png file
+<img src="{{ absolute_url(asset('images/logo.png')) }}">
+#}

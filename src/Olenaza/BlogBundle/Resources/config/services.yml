@@ -66,3 +66,15 @@ services:
     blog.user_provider:
         class:     Olenaza\BlogBundle\Security\Core\User\MyFOSUBUserProvider
         arguments: ['@fos_user.user_manager', { facebook: facebookId }]
+        calls:
+             - [setEventDispatcher, ['@event_dispatcher']]
+
+    blog.email_generator:
+        class: Olenaza\BlogBundle\Emails\EmailGenerator
+        arguments: ['@templating', '%blog_admin.from_email_address%']
+
+    blog.user_oauth_registration_listener:
+        class: Olenaza\BlogBundle\EventListener\UserOAuthRegistrationListener
+        arguments: ['@mailer', '@blog.email_generator']
+        tags:
+            - { name: kernel.event_listener, event: user.oauth_registered, method: onUserRegistration }
