@@ -1,0 +1,9 @@
+{{ form_start(commentDeleteForm, {'action': path('comment_delete', {'id': id })}) }}
+    {{ form_errors(commentDeleteForm) }}
+
+    {{ form_errors(commentDeleteForm.text) }}
+    {{ form_widget(commentDeleteForm.text) }}
+
+    {{ form_row(commentDeleteForm.save, { 'label': 'Видалити' }) }}
+
+{{ form_end(commentDeleteForm) }}

@@ -39,4 +39,32 @@ class CommentController extends Controller
             'id' => $comment->getId(),
         ]);
     }
+
+    /**
+     * @param Comment $comment
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function deleteAction(Comment $comment, Request $request)
+    {
+        $this->denyAccessUnlessGranted('delete', $comment);
+
+        $commentDeleteForm = $this->createForm(CommentType::class, $comment);
+
+        $commentDeleteForm->handleRequest($request);
+
+        if ($commentDeleteForm->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($comment);
+            $em->flush();
+
+            return $this->redirectToRoute('post_show', ['slug' => $comment->getPost()->getSlug()]);
+        }
+
+        return $this->render('OlenazaBlogBundle:comment:_partials_comment_delete_form.html.twig', [
+            'commentDeleteForm' => $commentDeleteForm->createView(),
+            'id' => $comment->getId(),
+        ]);
+    }
 }

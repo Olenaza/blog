@@ -92,7 +92,7 @@ class PostController extends Controller
      *
      * @return Response
      */
-    public function showAction(Post $post, Request $request, $commentToEditId = null)
+    public function showAction(Post $post, Request $request, $commentToEditId = null, $commentToDeleteId = null)
     {
         $breadcrumbs = $this->get('blog.breadcrumbs_creator')
             ->createBreadcrumbsFromHistory(
@@ -145,6 +145,7 @@ class PostController extends Controller
                 'commentForm' => $commentForm->createView(),
                 'likeForm' => $likeForm->createView(),
                 'commentToEditId' => $commentToEditId,
+                'commentToDeleteId' => $commentToDeleteId,
             ]);
         } else {
             return $this->render('OlenazaBlogBundle:post:post_show.html.twig', [

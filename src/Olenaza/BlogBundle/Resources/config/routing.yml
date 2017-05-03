@@ -19,3 +19,9 @@ comment_update:
     defaults: { _controller: OlenazaBlogBundle:Comment:edit}
     requirements:
         id: '\d+'
+
+comment_delete:
+    path:     /comments/{id}/delete
+    defaults: { _controller: OlenazaBlogBundle:Comment:delete}
+    requirements:
+        id: '\d+'

@@ -30,7 +30,13 @@ post_comment_edit:
     path:     /{slug}/comment/{commentToEditId}/edit
     defaults: { _controller: OlenazaBlogBundle:Post:show}
     requirements:
-        commentEditId: '\d+'
+        commentToEditId: '\d+'
+
+post_comment_delete:
+    path:     /{slug}/comment/{commentToDeleteId}/delete
+    defaults: { _controller: OlenazaBlogBundle:Post:show}
+    requirements:
+        commentToDeleteId: '\d+'
 
 post_show:
     path:     /{slug}

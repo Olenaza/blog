@@ -19,6 +19,14 @@
                         <a href="{{ path('post_comment_edit', {'slug': post.slug, 'commentToEditId': comment.id}) }}">
                             Edit
                         </a>
+                        <a href="{{ path('post_comment_delete', {'slug': post.slug, 'commentToDeleteId': comment.id}) }}">
+                            Delete
+                        </a>
+                    {% endif %}
+                    {% if app.user and is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('post_comment_delete', {'slug': post.slug, 'commentToDeleteId': comment.id}) }}">
+                            Delete
+                        </a>
                     {% endif %}
                 </div>
                 <div class="panel-body">
@@ -26,6 +34,11 @@
                         {{ render(controller(
                             'OlenazaBlogBundle:Comment:edit',
                             { 'id': commentToEditId }
+                        )) }}
+                    {% elseif commentToDeleteId is defined and commentToDeleteId == comment.id%}
+                        {{ render(controller(
+                            'OlenazaBlogBundle:Comment:delete',
+                            { 'id': commentToDeleteId }
                         )) }}
                     {% else %}
                         {{ comment.text }}

@@ -46,7 +46,7 @@ class CommentVoter extends Voter
 
         switch ($attribute) {
             case self::DELETE:
-                return $this->canDelete($comment, $user);
+                return $this->canDelete($comment, $user, $token);
             case self::EDIT:
                 return $this->canEdit($comment, $user);
         }
@@ -54,7 +54,7 @@ class CommentVoter extends Voter
         throw new \LogicException('This code should not be reached!');
     }
 
-    private function canDelete(Comment $comment, User $user)
+    private function canDelete(Comment $comment, User $user, TokenInterface $token)
     {
         if ($this->decisionManager->decide($token, ['ROLE_ADMIN'])) {
             return true;
